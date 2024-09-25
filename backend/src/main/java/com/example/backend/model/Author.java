@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "authors")
@@ -23,6 +24,9 @@ public class Author {
 
     @Column(name = "nationality")
     private String nationality;
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

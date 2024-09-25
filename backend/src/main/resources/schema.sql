@@ -1,7 +1,19 @@
+-- Create the sequence for author_id starting from 1
+CREATE SEQUENCE author_sequence START 1 INCREMENT 1;
+
+-- Create the sequence for book_id starting from 1
+CREATE SEQUENCE book_sequence START 1 INCREMENT 1;
+
+-- Create the sequence for borrower_id starting from 1
+CREATE SEQUENCE borrower_sequence START 1 INCREMENT 1;
+
+-- Create the sequence for borrowing_id starting from 1
+CREATE SEQUENCE borrowing_sequence START 1 INCREMENT 1;
+
 -- Create Authors table
 CREATE TABLE authors
 (
-    author_id   SERIAL PRIMARY KEY,
+    author_id   INT PRIMARY KEY          DEFAULT nextval('author_sequence'),
     name        VARCHAR(100) NOT NULL,
     nationality VARCHAR(50),
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -11,20 +23,29 @@ CREATE TABLE authors
 -- Create Books table
 CREATE TABLE books
 (
-    book_id          SERIAL PRIMARY KEY,
+    book_id          INT PRIMARY KEY          DEFAULT nextval('book_sequence'),
     title            VARCHAR(200) NOT NULL,
     isbn             VARCHAR(13) UNIQUE,
     publication_year INTEGER,
-    author_id        INTEGER REFERENCES authors (author_id),
     status           VARCHAR(20)              DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BORROWED')),
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create the book_authors join table
+CREATE TABLE book_authors
+(
+    book_id   INT NOT NULL,
+    author_id INT NOT NULL,
+    PRIMARY KEY (book_id, author_id),
+    FOREIGN KEY (book_id) REFERENCES books (book_id),
+    FOREIGN KEY (author_id) REFERENCES authors (author_id)
+);
+
 -- Create Borrowers table
 CREATE TABLE borrowers
 (
-    borrower_id SERIAL PRIMARY KEY,
+    borrower_id INT PRIMARY KEY          DEFAULT nextval('borrower_sequence'),
     name        VARCHAR(100)        NOT NULL,
     email       VARCHAR(100) UNIQUE NOT NULL,
     phone       VARCHAR(20),
@@ -37,7 +58,7 @@ CREATE TABLE borrowers
 -- Create Borrowings table
 CREATE TABLE borrowings
 (
-    borrowing_id SERIAL PRIMARY KEY,
+    borrowing_id INT PRIMARY KEY          DEFAULT nextval('borrowing_sequence'),
     book_id      INTEGER REFERENCES books (book_id),
     borrower_id  INTEGER REFERENCES borrowers (borrower_id),
     borrow_date  DATE                     DEFAULT CURRENT_DATE,
@@ -49,6 +70,6 @@ CREATE TABLE borrowings
 );
 
 -- Create indexes for improved query performance
-CREATE INDEX idx_books_author_id ON books (author_id);
+CREATE INDEX idx_books_author_id ON book_authors (author_id);
 CREATE INDEX idx_borrowings_book_id ON borrowings (book_id);
 CREATE INDEX idx_borrowings_borrower_id ON borrowings (borrower_id);

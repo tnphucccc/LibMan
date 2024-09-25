@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Borrowers {
+public class Borrower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long borrowerId;
