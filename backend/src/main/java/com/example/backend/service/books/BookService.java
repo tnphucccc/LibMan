@@ -1,6 +1,8 @@
 package com.example.backend.service.books;
 
+import com.example.backend.dto.AuthorDTO;
 import com.example.backend.dto.BookDTO;
+import com.example.backend.exception.ResourceAlreadyExistsException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Author;
 import com.example.backend.model.Book;
@@ -43,51 +45,45 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book createBook(Book book) {
-        try {
-            Set<Author> authors = book.getAuthors();
-            if (authors != null) {
-                book.setAuthors(getPersistedAuthors(authors));
-            }
-            if (book.getTitle() == null || book.getIsbn() == null || book.getStatus() == null) {
-                throw new IllegalArgumentException("Title, ISBN, and Status cannot be null");
-            }
-            return bookRepository.save(book);
-        } catch (Exception e) {
-            logger.error("An error occurred while creating the book: {}", e.getMessage());
-            throw e;
-        }
+    public BookDTO createBook(BookDTO bookDTO) {
+        Book book = new Book();
+        book.setTitle(bookDTO.getTitle());
+        book.setIsbn(bookDTO.getIsbn());
+        book.setPublicationYear(bookDTO.getPublicationYear());
+        book.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
+
+        Set<Author> authors = getPersistedAuthors(bookDTO.getAuthors());
+        book.setAuthors(authors);
+
+        Book savedBook = bookRepository.save(book);
+        return convertToBookDTO(savedBook);
     }
 
     @Override
-    public Book updateBook(Long bookId, Book bookDetails) {
-        try {
-            Book existingBook = bookRepository.findById(bookId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+    public BookDTO updateBook(Long bookId, BookDTO bookDTO) {
+        Book existingBook = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
 
-            if (bookDetails.getTitle() != null) {
-                existingBook.setTitle(bookDetails.getTitle());
-            }
-            if (bookDetails.getIsbn() != null) {
-                existingBook.setIsbn(bookDetails.getIsbn());
-            }
-            if (bookDetails.getPublicationYear() != null) {
-                existingBook.setPublicationYear(bookDetails.getPublicationYear());
-            }
-            if (bookDetails.getStatus() != null) {
-                existingBook.setStatus(bookDetails.getStatus());
-            }
-
-            Set<Author> authors = bookDetails.getAuthors();
-            if (authors != null) {
-                existingBook.setAuthors(getPersistedAuthors(authors));
-            }
-
-            return bookRepository.save(existingBook);
-        } catch (Exception e) {
-            logger.error("An error occurred while updating the book: {}", e.getMessage(), e);
-            throw e;
+        if (bookDTO.getTitle() != null) {
+            existingBook.setTitle(bookDTO.getTitle());
         }
+        if (bookDTO.getIsbn() != null) {
+            existingBook.setIsbn(bookDTO.getIsbn());
+        }
+        if (bookDTO.getPublicationYear() != null) {
+            existingBook.setPublicationYear(bookDTO.getPublicationYear());
+        }
+
+        if (bookDTO.getAuthors() != null && !bookDTO.getAuthors().isEmpty()) {
+            Set<Author> authors = getPersistedAuthors(bookDTO.getAuthors());
+            existingBook.setAuthors(authors);
+        }
+
+        if (bookDTO.getStatus() != null) {
+            existingBook.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
+        }
+        Book updatedBook = bookRepository.save(existingBook);
+        return convertToBookDTO(updatedBook);
     }
 
     @Override
@@ -97,23 +93,26 @@ public class BookService implements IBookService {
         bookRepository.delete(book);
     }
 
-    private Set<Author> getPersistedAuthors(Set<Author> authors) {
+    private Set<Author> getPersistedAuthors(List<AuthorDTO> authorDTOs) {
         Set<Author> persistedAuthors = new HashSet<>();
-        for (Author author : authors) {
-            Optional<Author> existingAuthor = authorRepository.findByName(author.getName());
+        for (AuthorDTO authorDTO : authorDTOs) {
+            Optional<Author> existingAuthor = authorRepository.findByName(authorDTO.getName());
             if (existingAuthor.isPresent()) {
                 persistedAuthors.add(existingAuthor.get());
             } else {
-                persistedAuthors.add(authorRepository.save(author));
+                Author newAuthor = new Author();
+                newAuthor.setName(authorDTO.getName());
+                newAuthor.setNationality(authorDTO.getNationality());
+                persistedAuthors.add(authorRepository.save(newAuthor));
             }
         }
         return persistedAuthors;
     }
 
     private BookDTO convertToBookDTO(Book book) {
-        List<String> authorNames = book.getAuthors().stream()
-                .map(Author::getName)
+        List<AuthorDTO> authorDTOs = book.getAuthors().stream()
+                .map(author -> new AuthorDTO(author.getAuthorId(), author.getName(), author.getNationality()))
                 .collect(Collectors.toList());
-        return new BookDTO(book.getBookId(), book.getTitle(), book.getIsbn(), book.getPublicationYear(), authorNames, book.getStatus().name());
+        return new BookDTO(book.getBookId(), book.getTitle(), book.getIsbn(), book.getPublicationYear(), authorDTOs, book.getStatus().name());
     }
 }

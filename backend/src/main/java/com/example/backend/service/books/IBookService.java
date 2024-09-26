@@ -1,7 +1,6 @@
 package com.example.backend.service.books;
 
 import com.example.backend.dto.BookDTO;
-import com.example.backend.model.Book;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ public interface IBookService {
 
     BookDTO getBookById(Long bookId);
 
-    Book createBook(Book book);
+    BookDTO createBook(BookDTO bookDTO);
 
-    Book updateBook(Long bookId, Book book);
+    BookDTO updateBook(Long bookId, BookDTO bookDTO);
 
     void deleteBook(Long bookId);
 }

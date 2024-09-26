@@ -14,6 +14,6 @@ public class BookDTO {
     private String title;
     private String isbn;
     private Integer publicationYear;
-    private List<String> authorNames;
+    private List<AuthorDTO> authors;
     private String status;
 }

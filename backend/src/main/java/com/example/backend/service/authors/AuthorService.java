@@ -1,5 +1,6 @@
 package com.example.backend.service.authors;
 
+import com.example.backend.dto.AuthorDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Author;
 import com.example.backend.repository.AuthorRepository;
@@ -9,27 +10,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class AuthorService {
+public class AuthorService implements IAuthorService {
     private static final Logger logger = LoggerFactory.getLogger(AuthorService.class);
 
     @Autowired
     private AuthorRepository authorRepository;
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    @Override
+    public List<AuthorDTO> getAllAuthors() {
+        return authorRepository.findAll().stream()
+                .map(this::convertToAuthorDTO)
+                .collect(Collectors.toList());
     }
 
-    public Author getAuthorById(Long authorId) {
-        return authorRepository.findById(authorId)
+    @Override
+    public AuthorDTO getAuthorById(Long authorId) {
+        Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
+        return convertToAuthorDTO(author);
     }
 
     public Author createAuthor(Author author) {
         return authorRepository.save(author);
     }
 
+    @Override
     public Author updateAuthor(Long authorId, Author author) {
         Author existingAuthor = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
@@ -38,9 +46,18 @@ public class AuthorService {
         return authorRepository.save(existingAuthor);
     }
 
+    @Override
     public void deleteAuthor(Long authorId) {
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
         authorRepository.delete(author);
+    }
+
+    private AuthorDTO convertToAuthorDTO(Author author) {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setAuthorId(author.getAuthorId());
+        authorDTO.setName(author.getName());
+        authorDTO.setNationality(author.getNationality());
+        return authorDTO;
     }
 }
