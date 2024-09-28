@@ -1,19 +1,7 @@
--- Create the sequence for author_id starting from 1
-CREATE SEQUENCE author_sequence START 1 INCREMENT 1;
-
--- Create the sequence for book_id starting from 1
-CREATE SEQUENCE book_sequence START 1 INCREMENT 1;
-
--- Create the sequence for borrower_id starting from 1
-CREATE SEQUENCE borrower_sequence START 1 INCREMENT 1;
-
--- Create the sequence for borrowing_id starting from 1
-CREATE SEQUENCE borrowing_sequence START 1 INCREMENT 1;
-
 -- Create Authors table
 CREATE TABLE authors
 (
-    author_id   INT PRIMARY KEY          DEFAULT nextval('author_sequence'),
+    author_id   INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
     name        VARCHAR(100) NOT NULL,
     nationality VARCHAR(50),
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -23,11 +11,11 @@ CREATE TABLE authors
 -- Create Books table
 CREATE TABLE books
 (
-    book_id          INT PRIMARY KEY          DEFAULT nextval('book_sequence'),
+    book_id          INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
     title            VARCHAR(200) NOT NULL,
     isbn             VARCHAR(13) UNIQUE,
     publication_year INTEGER,
-    status           VARCHAR(20)              DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BORROWED')),
+    status           VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BORROWED')),
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -38,19 +26,19 @@ CREATE TABLE book_authors
     book_id   INT NOT NULL,
     author_id INT NOT NULL,
     PRIMARY KEY (book_id, author_id),
-    FOREIGN KEY (book_id) REFERENCES books (book_id),
-    FOREIGN KEY (author_id) REFERENCES authors (author_id)
+    FOREIGN KEY (book_id) REFERENCES books (book_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES authors (author_id) ON DELETE CASCADE
 );
 
 -- Create Borrowers table
 CREATE TABLE borrowers
 (
-    borrower_id INT PRIMARY KEY          DEFAULT nextval('borrower_sequence'),
-    name        VARCHAR(100)        NOT NULL,
+    borrower_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+    name        VARCHAR(100) NOT NULL,
     email       VARCHAR(100) UNIQUE NOT NULL,
     phone       VARCHAR(20),
     address     TEXT,
-    status      VARCHAR(20)              DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'SUSPENDED')),
+    status      VARCHAR(20) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'SUSPENDED')),
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -58,13 +46,13 @@ CREATE TABLE borrowers
 -- Create Borrowings table
 CREATE TABLE borrowings
 (
-    borrowing_id INT PRIMARY KEY          DEFAULT nextval('borrowing_sequence'),
+    borrowing_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
     book_id      INTEGER REFERENCES books (book_id),
     borrower_id  INTEGER REFERENCES borrowers (borrower_id),
-    borrow_date  DATE                     DEFAULT CURRENT_DATE,
+    borrow_date  DATE DEFAULT CURRENT_DATE,
     due_date     DATE NOT NULL,
     return_date  DATE,
-    status       VARCHAR(20)              DEFAULT 'BORROWED' CHECK (status IN ('BORROWED', 'RETURNED', 'OVERDUE')),
+    status       VARCHAR(20) DEFAULT 'BORROWED' CHECK (status IN ('BORROWED', 'RETURNED', 'OVERDUE')),
     created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
