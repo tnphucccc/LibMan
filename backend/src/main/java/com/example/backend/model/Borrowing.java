@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class Borrowing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "borrowing_id")
     private Long borrowingId;
 
     @ManyToOne

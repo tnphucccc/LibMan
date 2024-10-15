@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "borrowers")
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 public class Borrower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "borrower_id")
     private Long borrowerId;
 
     @Column(name = "name", nullable = false)
@@ -34,6 +37,9 @@ public class Borrower {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private BorrowerStatus status = BorrowerStatus.ACTIVE;
+
+    @OneToMany(mappedBy = "borrower")
+    private Set<Borrowing> borrowings = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

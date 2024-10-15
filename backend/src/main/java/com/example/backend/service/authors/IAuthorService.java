@@ -1,7 +1,6 @@
 package com.example.backend.service.authors;
 
 import com.example.backend.dto.AuthorDTO;
-import com.example.backend.model.Author;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ public interface IAuthorService {
 
     AuthorDTO getAuthorById(Long authorId);
 
-    Author createAuthor(Author author);
+    AuthorDTO createAuthor(AuthorDTO authorDTO);
 
-    Author updateAuthor(Long authorId, Author authorDetails);
+    AuthorDTO updateAuthor(Long authorId, AuthorDTO authorDTO);
 
     void deleteAuthor(Long authorId);
 }

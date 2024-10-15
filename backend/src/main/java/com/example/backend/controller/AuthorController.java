@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.AuthorDTO;
-import com.example.backend.model.Author;
 import com.example.backend.service.authors.IAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +26,14 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
-        Author newAuthor = authorService.createAuthor(author);
+    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO authorDTO) {
+        AuthorDTO newAuthor = authorService.createAuthor(authorDTO);
         return ResponseEntity.ok(newAuthor);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-        Author updatedAuthor = authorService.updateAuthor(id, author);
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
+        AuthorDTO updatedAuthor = authorService.updateAuthor(id, authorDTO);
         return ResponseEntity.ok(updatedAuthor);
     }
 

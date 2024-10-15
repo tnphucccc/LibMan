@@ -2,8 +2,8 @@ package com.example.backend.service.books;
 
 import com.example.backend.dto.AuthorDTO;
 import com.example.backend.dto.BookDTO;
-import com.example.backend.exception.ResourceAlreadyExistsException;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.mapper.LibraryMapper;
 import com.example.backend.model.Author;
 import com.example.backend.model.Book;
 import com.example.backend.repository.AuthorRepository;
@@ -30,10 +30,19 @@ public class BookService implements IBookService {
     @Autowired
     private AuthorRepository authorRepository;
 
+    @Autowired
+    private LibraryMapper libraryMapper;
+
     @Override
     public List<BookDTO> getAllBooks() {
         return bookRepository.findAll().stream()
-                .map(this::convertToBookDTO)
+                .map(book -> {
+                    BookDTO bookDTO = libraryMapper.toBookDTO(book);
+                    bookDTO.setAuthors(book.getAuthors().stream()
+                            .map(libraryMapper::toAuthorDTO)
+                            .collect(Collectors.toSet()));
+                    return bookDTO;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +50,11 @@ public class BookService implements IBookService {
     public BookDTO getBookById(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
-        return convertToBookDTO(book);
+        BookDTO bookDTO = libraryMapper.toBookDTO(book);
+        bookDTO.setAuthors(book.getAuthors().stream()
+                .map(libraryMapper::toAuthorDTO)
+                .collect(Collectors.toSet()));
+        return bookDTO;
     }
 
     @Override
@@ -56,7 +69,7 @@ public class BookService implements IBookService {
         book.setAuthors(authors);
 
         Book savedBook = bookRepository.save(book);
-        return convertToBookDTO(savedBook);
+        return libraryMapper.toBookDTO(savedBook);
     }
 
     @Override
@@ -83,7 +96,7 @@ public class BookService implements IBookService {
             existingBook.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
         }
         Book updatedBook = bookRepository.save(existingBook);
-        return convertToBookDTO(updatedBook);
+        return libraryMapper.toBookDTO(updatedBook);
     }
 
     @Override
@@ -93,7 +106,7 @@ public class BookService implements IBookService {
         bookRepository.delete(book);
     }
 
-    private Set<Author> getPersistedAuthors(List<AuthorDTO> authorDTOs) {
+    private Set<Author> getPersistedAuthors(Set<AuthorDTO> authorDTOs) {
         Set<Author> persistedAuthors = new HashSet<>();
         for (AuthorDTO authorDTO : authorDTOs) {
             Optional<Author> existingAuthor = authorRepository.findByName(authorDTO.getName());
@@ -107,12 +120,5 @@ public class BookService implements IBookService {
             }
         }
         return persistedAuthors;
-    }
-
-    private BookDTO convertToBookDTO(Book book) {
-        List<AuthorDTO> authorDTOs = book.getAuthors().stream()
-                .map(author -> new AuthorDTO(author.getAuthorId(), author.getName(), author.getNationality()))
-                .collect(Collectors.toList());
-        return new BookDTO(book.getBookId(), book.getTitle(), book.getIsbn(), book.getPublicationYear(), authorDTOs, book.getStatus().name());
     }
 }
