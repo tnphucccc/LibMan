@@ -27,12 +27,7 @@ public class Author {
     @Column(name = "nationality")
     private String nationality;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "book_authors",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
     @CreationTimestamp

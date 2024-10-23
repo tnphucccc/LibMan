@@ -27,7 +27,7 @@ public class LibraryMapper {
         return bookDTO;
     }
 
-    private BookDTO.BookSummaryDTO toBookSummaryDTO(Book book) {
+    public BookDTO.BookSummaryDTO toBookSummaryDTO(Book book) {
         return new BookDTO.BookSummaryDTO(
                 book.getBookId(),
                 book.getTitle(),

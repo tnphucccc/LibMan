@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookService implements IBookService {
-
     private static final Logger logger = LoggerFactory.getLogger(BookService.class);
 
     @Autowired
@@ -35,6 +34,7 @@ public class BookService implements IBookService {
 
     @Override
     public List<BookDTO> getAllBooks() {
+        logger.info("Fetching all books from the database");
         return bookRepository.findAll().stream()
                 .map(book -> {
                     BookDTO bookDTO = libraryMapper.toBookDTO(book);
@@ -49,6 +49,7 @@ public class BookService implements IBookService {
 
     @Override
     public BookDTO getBookById(Long bookId) {
+        logger.info("Fetching book with id: {}", bookId);
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
         BookDTO bookDTO = libraryMapper.toBookDTO(book);
@@ -61,6 +62,7 @@ public class BookService implements IBookService {
 
     @Override
     public BookDTO createBook(BookDTO bookDTO) {
+        logger.info("Creating a new book");
         Book book = new Book();
         book.setTitle(bookDTO.getTitle());
         book.setIsbn(bookDTO.getIsbn());
@@ -71,11 +73,13 @@ public class BookService implements IBookService {
         book.setAuthors(authors);
 
         Book savedBook = bookRepository.save(book);
+        logger.info("Book created successfully with id: {}", savedBook.getBookId());
         return libraryMapper.toBookDTO(savedBook);
     }
 
     @Override
     public BookDTO updateBook(Long bookId, BookDTO bookDTO) {
+        logger.info("Updating book with id: {}", bookId);
         Book existingBook = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
 
@@ -98,14 +102,17 @@ public class BookService implements IBookService {
             existingBook.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
         }
         Book updatedBook = bookRepository.save(existingBook);
+        logger.info("Book updated successfully with id: {}", updatedBook.getBookId());
         return libraryMapper.toBookDTO(updatedBook);
     }
 
     @Override
     public void deleteBook(Long bookId) {
+        logger.info("Deleting book with id: {}", bookId);
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
         bookRepository.delete(book);
+        logger.info("Book deleted successfully with id: {}", bookId);
     }
 
     private Set<Author> getPersistedAuthors(Set<AuthorDTO.AuthorSummaryDTO> authorDTOs) {
