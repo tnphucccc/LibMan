@@ -19,7 +19,7 @@ public class LibraryMapper {
 
         if (book.getAuthors() != null) {
             bookDTO.setAuthors(book.getAuthors().stream()
-                    .map(this::toAuthorDTO)
+                    .map(this::toAuthorSummaryDTO)
                     .collect(Collectors.toSet()));
         }
 
@@ -51,7 +51,7 @@ public class LibraryMapper {
         return authorDTO;
     }
 
-    private AuthorDTO.AuthorSummaryDTO toAuthorSummaryDTO(Author author) {
+    public AuthorDTO.AuthorSummaryDTO toAuthorSummaryDTO(Author author) {
         return new AuthorDTO.AuthorSummaryDTO(
                 author.getAuthorId(),
                 author.getName(),

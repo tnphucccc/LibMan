@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.BookDTO;
-import com.example.backend.model.Book;
 import com.example.backend.service.books.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

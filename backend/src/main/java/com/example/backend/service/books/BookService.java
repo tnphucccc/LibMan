@@ -38,8 +38,9 @@ public class BookService implements IBookService {
         return bookRepository.findAll().stream()
                 .map(book -> {
                     BookDTO bookDTO = libraryMapper.toBookDTO(book);
-                    bookDTO.setAuthors(book.getAuthors().stream()
-                            .map(libraryMapper::toAuthorDTO)
+                    List<Author> authors = bookRepository.findAuthorsByBookId(book.getBookId());
+                    bookDTO.setAuthors(authors.stream()
+                            .map(libraryMapper::toAuthorSummaryDTO)
                             .collect(Collectors.toSet()));
                     return bookDTO;
                 })
@@ -51,8 +52,9 @@ public class BookService implements IBookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
         BookDTO bookDTO = libraryMapper.toBookDTO(book);
-        bookDTO.setAuthors(book.getAuthors().stream()
-                .map(libraryMapper::toAuthorDTO)
+        List<Author> authors = bookRepository.findAuthorsByBookId(book.getBookId());
+        bookDTO.setAuthors(authors.stream()
+                .map(libraryMapper::toAuthorSummaryDTO)
                 .collect(Collectors.toSet()));
         return bookDTO;
     }
@@ -106,9 +108,9 @@ public class BookService implements IBookService {
         bookRepository.delete(book);
     }
 
-    private Set<Author> getPersistedAuthors(Set<AuthorDTO> authorDTOs) {
+    private Set<Author> getPersistedAuthors(Set<AuthorDTO.AuthorSummaryDTO> authorDTOs) {
         Set<Author> persistedAuthors = new HashSet<>();
-        for (AuthorDTO authorDTO : authorDTOs) {
+        for (AuthorDTO.AuthorSummaryDTO authorDTO : authorDTOs) {
             Optional<Author> existingAuthor = authorRepository.findByName(authorDTO.getName());
             if (existingAuthor.isPresent()) {
                 persistedAuthors.add(existingAuthor.get());

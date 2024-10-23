@@ -30,7 +30,7 @@ public class BookDTO {
     @Min(value = 1000, message = "Publication year must be at least 1000")
     private Integer publicationYear;
 
-    private Set<AuthorDTO> authors;
+    private Set<AuthorDTO.AuthorSummaryDTO> authors;
     private String status;
 
     @Data
