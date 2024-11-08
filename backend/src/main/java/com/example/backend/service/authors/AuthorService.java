@@ -2,7 +2,9 @@ package com.example.backend.service.authors;
 
 import com.example.backend.dto.AuthorDTO;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.mapper.LibraryMapper;
 import com.example.backend.model.Author;
+import com.example.backend.model.Book;
 import com.example.backend.repository.AuthorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,45 +21,69 @@ public class AuthorService implements IAuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
+    @Autowired
+    private LibraryMapper libraryMapper;
+
     @Override
     public List<AuthorDTO> getAllAuthors() {
+        logger.info("Fetching all authors from the database");
         return authorRepository.findAll().stream()
-                .map(this::convertToAuthorDTO)
-                .collect(Collectors.toList());
+                .map(author -> {
+                    AuthorDTO authorDTO = libraryMapper.toAuthorDTO(author);
+                    List<Book> books = authorRepository.findBooksByAuthorId(author.getAuthorId());
+                    authorDTO.setBooks(books.stream()
+                            .map(libraryMapper::toBookSummaryDTO)
+                            .collect(Collectors.toSet()));
+                    return authorDTO;
+                }).collect(Collectors.toList());
     }
 
     @Override
     public AuthorDTO getAuthorById(Long authorId) {
+        logger.info("Fetching author with id: {}", authorId);
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
-        return convertToAuthorDTO(author);
-    }
-
-    public Author createAuthor(Author author) {
-        return authorRepository.save(author);
+        AuthorDTO authorDTO = libraryMapper.toAuthorDTO(author);
+        List<Book> books = authorRepository.findBooksByAuthorId(author.getAuthorId());
+        authorDTO.setBooks(books.stream()
+                .map(libraryMapper::toBookSummaryDTO)
+                .collect(Collectors.toSet()));
+        return authorDTO;
     }
 
     @Override
-    public Author updateAuthor(Long authorId, Author author) {
+    public AuthorDTO createAuthor(AuthorDTO authorDTO) {
+        logger.info("Creating a new author");
+        Author author = libraryMapper.toAuthorEntity(authorDTO);
+        Author newAuthor = authorRepository.save(author);
+        logger.info("New author created with id: {}", newAuthor.getAuthorId());
+        return libraryMapper.toAuthorDTO(newAuthor);
+    }
+
+    @Override
+    public AuthorDTO updateAuthor(Long authorId, AuthorDTO authorDTO) {
+        logger.info("Updating author with id: {}", authorId);
         Author existingAuthor = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
-        existingAuthor.setName(author.getName());
-        existingAuthor.setNationality(author.getNationality());
-        return authorRepository.save(existingAuthor);
+
+        if (authorDTO.getName() != null) {
+            existingAuthor.setName(authorDTO.getName());
+        }
+        if (authorDTO.getNationality() != null) {
+            existingAuthor.setNationality(authorDTO.getNationality());
+        }
+
+        Author updatedAuthor = authorRepository.save(existingAuthor);
+        logger.info("Author updated successfully with id: {}", updatedAuthor.getAuthorId());
+        return libraryMapper.toAuthorDTO(updatedAuthor);
     }
 
     @Override
     public void deleteAuthor(Long authorId) {
+        logger.info("Deleting author with id: {}", authorId);
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
         authorRepository.delete(author);
-    }
-
-    private AuthorDTO convertToAuthorDTO(Author author) {
-        AuthorDTO authorDTO = new AuthorDTO();
-        authorDTO.setAuthorId(author.getAuthorId());
-        authorDTO.setName(author.getName());
-        authorDTO.setNationality(author.getNationality());
-        return authorDTO;
+        logger.info("Author deleted successfully with id: {}", authorId);
     }
 }

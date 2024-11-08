@@ -18,7 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
     private Long bookId;
 
     @Column(name = "title", nullable = false)
@@ -41,6 +42,9 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private BookStatus status = BookStatus.AVAILABLE;
+
+    @OneToMany(mappedBy = "book")
+    private Set<Borrowing> borrowings = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
