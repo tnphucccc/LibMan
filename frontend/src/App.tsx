@@ -20,7 +20,7 @@ function App() {
   }
 
   return (
-    <div className='h-screen'>
+    <div className='h-screen bg-teal-300'>
       <h1 className='text-3xl text-black bg-blue-400 text-left font-bold'>Counter test</h1>
       <span className='text-2xl font-semibold ml-2'>{count}</span>
       <div className="flex flex-row gap-4">
