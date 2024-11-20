@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className='h-screen bg-teal-300'>
-      <h1 className='text-3xl text-black bg-blue-400 text-left font-bold'>Counter test</h1>
+      <h1 className='text-3xl text-black bg-red-400 text-left font-bold'>Counter test</h1>
       <span className='text-2xl font-semibold ml-2'>{count}</span>
       <div className="flex flex-row gap-4">
         <button className='text-2xl text-white p-2 bg-slate-600' onClick={() => handleIncrement()}>
