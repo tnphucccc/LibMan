@@ -18,17 +18,13 @@ import lombok.NoArgsConstructor;
 public class BorrowingDTO {
     private Long borrowingId;
 
-    @NotBlank(message = "Book ID is required");
     private Book book;
 
-    @NotBlank(message = "Borrower ID is required");
     private Borrower borrower;
 
-    @NotBlank(message = "Borrowed date is required");
     @Size(min = 10, message = "Borrowed date must be in the format yyyy-MM-dd")
     private LocalDate borrowedDate;
 
-    @NotBlank(message = "Due date is required");
     @Size(min = 10, message = "Due date must be in the format yyyy-MM-dd")
     private LocalDate dueDate;
 
