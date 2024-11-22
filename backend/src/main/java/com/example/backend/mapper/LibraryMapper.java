@@ -2,8 +2,10 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.AuthorDTO;
 import com.example.backend.dto.BookDTO;
+import com.example.backend.dto.BorrowerDTO;
 import com.example.backend.model.Author;
 import com.example.backend.model.Book;
+import com.example.backend.model.Borrower;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -64,5 +66,33 @@ public class LibraryMapper {
         author.setName(authorDTO.getName());
         author.setNationality(authorDTO.getNationality());
         return author;
+    }
+
+    public BorrowerDTO toBorrowerDTO(Borrower borrower) {
+        BorrowerDTO borrowerDTO = new BorrowerDTO();
+        borrowerDTO.setBorrowerId(borrower.getBorrowerId());
+        borrowerDTO.setName(borrower.getName());
+        borrowerDTO.setEmail(borrower.getEmail());
+        borrowerDTO.setPhone(borrower.getPhone());
+        borrowerDTO.setAddress(borrower.getAddress());
+        return borrowerDTO;
+    }
+
+    public Borrower toBorrowerEntity(BorrowerDTO borrowerDTO) {
+        Borrower borrower = new Borrower();
+        borrower.setName(borrowerDTO.getName());
+        borrower.setEmail(borrowerDTO.getEmail());
+        borrower.setPhone(borrowerDTO.getPhone());
+        borrower.setAddress(borrowerDTO.getAddress());
+        return borrower;
+    }
+
+    public BorrowerDTO.BorrowerSummaryDTO toBorrowerSummaryDTO(Borrower borrower) {
+        return new BorrowerDTO.BorrowerSummaryDTO(
+                borrower.getBorrowerId(),
+                borrower.getName(),
+                borrower.getEmail(),
+                borrower.getAddress()
+        );
     }
 }
