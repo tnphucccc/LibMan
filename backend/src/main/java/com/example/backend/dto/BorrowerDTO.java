@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import com.example.backend.model.Borrower;
 import com.example.backend.model.Borrowing;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -32,12 +34,11 @@ public class BorrowerDTO {
     private String address;
 
     @NotBlank(message = "Status is required")
-    private String status;
+    private Borrower.BorrowerStatus status;
 
-    private Set<Borrowing> borrowings;
-    private Set<BorrowerDTO> borrowers;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    private Set<BorrowingDTO> borrowings;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Data
     @NoArgsConstructor
