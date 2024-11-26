@@ -1,47 +1,51 @@
 package com.example.backend.dto;
 
-import com.example.backend.model.Book;
-import com.example.backend.model.Borrower;
 import com.example.backend.model.Borrowing;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BorrowerDTO {
     private Long borrowerId;
 
     @NotBlank(message = "Name is required")
-    @Size(max = 255, message = "Title must be less than 255 characters")
+    @Size(max = 255, message = "Name must be less than 255 characters")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
+
+    @Size(max = 50, message = "Phone number must be less than 50 characters")
     private String phone;
+
+    @Size(max = 255, message = "Address must be less than 255 characters")
     private String address;
-    private Borrower.BorrowerStatus status;
+
+    @NotBlank(message = "Status is required")
+    private String status;
+
     private Set<Borrowing> borrowings;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Set<BorrowerDTO> borrowers;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BorrowerSummaryDTO {
-        private Long borrowerId;
+        private Long id;
         private String name;
         private String email;
-        private String phone;
-        private String address;
-        private Borrower.BorrowerStatus status;
-        private Set<Borrowing> borrowings;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+        private String status;
     }
 }
