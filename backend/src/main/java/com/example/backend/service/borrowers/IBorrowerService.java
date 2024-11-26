@@ -7,7 +7,7 @@ import com.example.backend.model.Borrower;
 import java.util.List;
 
 public interface IBorrowerService {
-    List<Borrower> getAllBorrowers();
+    List<BorrowerDTO> getAllBorrowers();
 
     BorrowerDTO getBorrowerById(Long borrowerID);
 
