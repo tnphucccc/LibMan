@@ -17,8 +17,8 @@ public class BorrowerController {
     private IBorrowerService borrowerService;
 
     @GetMapping
-    public List<Borrower> getAllBorrowers() {
-        return  borrowerService.getAllBorrowers();
+    public List<BorrowerDTO> getAllBorrowers() {
+        return borrowerService.getAllBorrowers();
     }
 
     @GetMapping("/{id}")
