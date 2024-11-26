@@ -1,6 +1,7 @@
 package com.example.backend.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.example.backend.model.Book;
 import com.example.backend.model.Borrower;
@@ -27,6 +28,9 @@ public class BorrowingDTO {
 
     @Size(min = 10, message = "Due date must be in the format yyyy-MM-dd")
     private LocalDate dueDate;
+
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     private String status;
 }
