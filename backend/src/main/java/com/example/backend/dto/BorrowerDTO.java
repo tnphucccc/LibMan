@@ -34,7 +34,7 @@ public class BorrowerDTO {
     private String address;
 
     @NotBlank(message = "Status is required")
-    private Borrower.BorrowerStatus status;
+    private String status;
 
     private Set<BorrowingDTO> borrowings;
     private LocalDateTime createdAt;
