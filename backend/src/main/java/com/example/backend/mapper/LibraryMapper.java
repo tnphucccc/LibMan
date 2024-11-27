@@ -24,6 +24,7 @@ public class LibraryMapper {
         }
 
         bookDTO.setStatus(book.getStatus().name());
+        bookDTO.setCoverImageUrl(book.getCoverImageUrl());
         return bookDTO;
     }
 

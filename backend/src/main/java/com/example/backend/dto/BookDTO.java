@@ -32,6 +32,7 @@ public class BookDTO {
 
     private Set<AuthorDTO.AuthorSummaryDTO> authors;
     private String status;
+    private String coverImageUrl;
 
     @Data
     @NoArgsConstructor
