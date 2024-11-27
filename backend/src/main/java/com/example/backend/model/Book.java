@@ -43,7 +43,7 @@ public class Book {
     @Column(name = "status", nullable = false)
     private BookStatus status = BookStatus.AVAILABLE;
 
-    @Column(name = "cover_image_url", nullable = true)
+    @Column(name = "cover_image_url")
     private String coverImageUrl;
 
     @OneToMany(mappedBy = "book")

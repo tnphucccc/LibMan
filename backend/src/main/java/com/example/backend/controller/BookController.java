@@ -14,30 +14,30 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
         BookDTO book = bookService.getBookById(id);
         return ResponseEntity.ok(book);
     }
 
-    @PostMapping
+    @PostMapping({"", "/"})
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
         BookDTO newBook = bookService.createBook(bookDTO);
         return ResponseEntity.ok(newBook);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO book) {
         BookDTO updatedBook = bookService.updateBook(id, book);
         return ResponseEntity.ok(updatedBook);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
