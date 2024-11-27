@@ -14,30 +14,30 @@ public class AuthorController {
     @Autowired
     private IAuthorService authorService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<AuthorDTO> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable Long id) {
         AuthorDTO author = authorService.getAuthorById(id);
         return ResponseEntity.ok(author);
     }
 
-    @PostMapping
+    @PostMapping({"", "/"})
     public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO authorDTO) {
         AuthorDTO newAuthor = authorService.createAuthor(authorDTO);
         return ResponseEntity.ok(newAuthor);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
         AuthorDTO updatedAuthor = authorService.updateAuthor(id, authorDTO);
         return ResponseEntity.ok(updatedAuthor);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
         return ResponseEntity.noContent().build();
