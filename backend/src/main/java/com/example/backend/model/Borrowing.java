@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "borrowings")
@@ -53,5 +54,10 @@ public class Borrowing {
         BORROWED,
         RETURNED,
         OVERDUE
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(borrowingId);
     }
 }

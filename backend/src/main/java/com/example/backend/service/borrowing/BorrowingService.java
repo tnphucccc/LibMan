@@ -5,6 +5,7 @@ import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.LibraryMapper;
 import com.example.backend.model.Book;
 import com.example.backend.model.Borrowing;
+import com.example.backend.repository.BookRepository;
 import com.example.backend.repository.BorrowingRepository;
 import com.example.backend.service.authors.AuthorService;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ public class BorrowingService implements IBorrowingService {
 
     @Autowired
     private BorrowingRepository borrowingRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private LibraryMapper libraryMapper;
@@ -54,7 +58,10 @@ public class BorrowingService implements IBorrowingService {
         borrowing.setDueDate(borrowingDTO.getDueDate());
         borrowing.setStatus(Borrowing.BorrowingStatus.valueOf("BORROWED"));
 
-        borrowing.getBook().setStatus(Book.BookStatus.valueOf("BORROWED"));
+        Book book = bookRepository.findById(borrowingDTO.getBook().getBookId())
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + borrowingDTO.getBook().getBookId()));
+        book.setStatus(Book.BookStatus.BORROWED);
+        bookRepository.save(book);
 
         Borrowing saveBorrowing = borrowingRepository.save(borrowing);
         logger.info("Borrowing created successfully with id: {}", saveBorrowing.getBorrowingId());
