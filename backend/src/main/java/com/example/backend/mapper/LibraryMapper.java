@@ -8,7 +8,6 @@ import com.example.backend.model.Author;
 import com.example.backend.model.Book;
 import com.example.backend.model.Borrower;
 import com.example.backend.model.Borrowing;
-
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

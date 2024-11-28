@@ -4,7 +4,6 @@ import com.example.backend.dto.BorrowingDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.LibraryMapper;
 import com.example.backend.model.Borrowing;
-import com.example.backend.repository.AuthorRepository;
 import com.example.backend.repository.BorrowingRepository;
 import com.example.backend.service.authors.AuthorService;
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ public class BorrowingService implements IBorrowingService {
         logger.info("Fetching borrowing with id: {}", borrowingId);
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found with id: " + borrowingId));
-        BorrowingDTO borrowingDTO =  libraryMapper.toBorrowingDTO(borrowing);
+        BorrowingDTO borrowingDTO = libraryMapper.toBorrowingDTO(borrowing);
         return libraryMapper.toBorrowingDTO(borrowing);
     }
 
@@ -65,16 +64,16 @@ public class BorrowingService implements IBorrowingService {
         Borrowing existingBorrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found with id: " + borrowingId));
 
-        if(borrowingDTO.getBorrower() != null){
+        if (borrowingDTO.getBorrower() != null) {
             existingBorrowing.setBorrower(borrowingDTO.getBorrower());
         }
-        if(borrowingDTO.getBook() != null){
+        if (borrowingDTO.getBook() != null) {
             existingBorrowing.setBook(borrowingDTO.getBook());
         }
-        if(borrowingDTO.getBorrowedDate() != null){
+        if (borrowingDTO.getBorrowedDate() != null) {
             existingBorrowing.setBorrowedDate(borrowingDTO.getBorrowedDate());
         }
-        if(borrowingDTO.getDueDate() != null){
+        if (borrowingDTO.getDueDate() != null) {
             existingBorrowing.setDueDate(borrowingDTO.getDueDate());
         }
 

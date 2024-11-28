@@ -1,8 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AuthorDTO;
 import com.example.backend.dto.BorrowerDTO;
-import com.example.backend.model.Borrower;
 import com.example.backend.service.borrowers.IBorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

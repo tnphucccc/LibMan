@@ -4,8 +4,6 @@ import com.example.backend.dto.BorrowerDTO;
 import com.example.backend.dto.BorrowingDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.LibraryMapper;
-import com.example.backend.model.Author;
-import com.example.backend.model.Book;
 import com.example.backend.model.Borrower;
 import com.example.backend.model.Borrowing;
 import com.example.backend.repository.BorrowerRepository;
@@ -41,9 +39,9 @@ public class BorrowerService implements IBorrowerService {
                 .map(borrower -> {
                     BorrowerDTO borrowerDTO = libraryMapper.toBorrowerDTO(borrower);
                     List<Borrowing> borrowings = borrowerRepository.findBorrowingByBorrowerId(borrower.getBorrowerId());
-                            borrowerDTO.setBorrowings(borrowings.stream()
-                                            .map(libraryMapper::toBorrowingDTO)
-                                            .collect(Collectors.toSet()));
+                    borrowerDTO.setBorrowings(borrowings.stream()
+                            .map(libraryMapper::toBorrowingDTO)
+                            .collect(Collectors.toSet()));
                     return borrowerDTO;
                 }).
                 collect(Collectors.toList());
