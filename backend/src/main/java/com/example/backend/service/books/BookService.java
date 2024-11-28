@@ -68,6 +68,7 @@ public class BookService implements IBookService {
         book.setIsbn(bookDTO.getIsbn());
         book.setPublicationYear(bookDTO.getPublicationYear());
         book.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
+        book.setCoverImageUrl(bookDTO.getCoverImageUrl());
 
         Set<Author> authors = getPersistedAuthors(bookDTO.getAuthors());
         book.setAuthors(authors);
@@ -101,6 +102,11 @@ public class BookService implements IBookService {
         if (bookDTO.getStatus() != null) {
             existingBook.setStatus(Book.BookStatus.valueOf(bookDTO.getStatus()));
         }
+
+        if (bookDTO.getCoverImageUrl() != null) {
+            existingBook.setCoverImageUrl(bookDTO.getCoverImageUrl());
+        }
+
         Book updatedBook = bookRepository.save(existingBook);
         logger.info("Book updated successfully with id: {}", updatedBook.getBookId());
         return libraryMapper.toBookDTO(updatedBook);
