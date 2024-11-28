@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +49,9 @@ public class BorrowingService implements IBorrowingService {
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrower(borrowingDTO.getBorrower());
         borrowing.setBook(borrowingDTO.getBook());
-        borrowing.setBorrowedDate(borrowingDTO.getBorrowedDate());
+        borrowing.setBorrowedDate(LocalDate.now());
         borrowing.setDueDate(borrowingDTO.getDueDate());
-        borrowing.setStatus(Borrowing.BorrowingStatus.valueOf(borrowingDTO.getStatus()));
+        borrowing.setStatus(Borrowing.BorrowingStatus.valueOf("BORROWED"));
 
         Borrowing saveBorrowing = borrowingRepository.save(borrowing);
         logger.info("Borrowing created successfully with id: {}", saveBorrowing.getBorrowingId());
