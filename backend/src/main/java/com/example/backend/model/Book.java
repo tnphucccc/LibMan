@@ -43,6 +43,9 @@ public class Book {
     @Column(name = "status", nullable = false)
     private BookStatus status = BookStatus.AVAILABLE;
 
+    @Column(name = "cover_image_url")
+    private String coverImageUrl;
+
     @OneToMany(mappedBy = "book")
     private Set<Borrowing> borrowings = new HashSet<>();
 
