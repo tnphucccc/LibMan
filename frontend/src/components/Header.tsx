@@ -4,12 +4,12 @@ export default function Header() {
     const navigate = useNavigate();
     const currPage = useLocation().pathname;
 
-    const handleBorrow = () => {
-        navigate('/Borrow');
+    const handleAuthors = () => {
+        navigate('/Authors');
     }
 
-    const handleReturn = () => {
-        navigate('/Return');
+    const handleRecord = () => {
+        navigate('/Record');
     }
 
     const handleHome = () => {
@@ -38,12 +38,12 @@ export default function Header() {
                     Books
             </button>
 
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleBorrow()}>
-                    Borrow
+            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleAuthors()}>
+                    Authors
             </button>
 
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleReturn()}>
-                    Return
+            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleRecord()}>
+                    Record
             </button>
 
         </div>
