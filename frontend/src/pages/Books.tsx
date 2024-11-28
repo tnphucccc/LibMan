@@ -35,8 +35,12 @@ export default function Books() {
     const handleSubmit = async () => {
         try {
             const res = await axios.post(import.meta.env.VITE_BASE_URL + '/borrowings', {
-                bookId: currentBookId,
-                borrowerId: parseInt(idRef.current!.value),
+                book:{
+                    bookId: currentBookId,
+                },
+                borrower:{
+                    borrowerId: parseInt(idRef.current!.value),
+                },
                 dueDate: dateRef.current!.value
             });
             if (res.status === 200) {
