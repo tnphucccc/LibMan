@@ -28,13 +28,13 @@ public class Borrowing {
     @JoinColumn(name = "borrower_id", nullable = false)
     private Borrower borrower;
 
-    @Column(name = "borrow_date", nullable = false)
+    @Column(name = "borrowed_date", nullable = false)
     private LocalDate borrowedDate;
 
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
-    @Column(name = "return_date")
+    @Column(name = "returned_date")
     private LocalDate returnedDate;
 
     @Enumerated(EnumType.STRING)
