@@ -21,6 +21,8 @@ public class AuthorDTO {
     @Size(max = 50, message = "Nationality must be less than 50 characters")
     private String nationality;
 
+    private String portraitUrl;
+
     private Set<BookDTO.BookSummaryDTO> books;
 
     @Data
@@ -30,5 +32,6 @@ public class AuthorDTO {
         private Long id;
         private String name;
         private String nationality;
+        private String portraitUrl;
     }
 }

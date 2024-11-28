@@ -72,6 +72,9 @@ public class AuthorService implements IAuthorService {
         if (authorDTO.getNationality() != null) {
             existingAuthor.setNationality(authorDTO.getNationality());
         }
+        if (authorDTO.getPortraitUrl() != null) {
+            existingAuthor.setPortraitUrl(authorDTO.getPortraitUrl());
+        }
 
         Author updatedAuthor = authorRepository.save(existingAuthor);
         logger.info("Author updated successfully with id: {}", updatedAuthor.getAuthorId());

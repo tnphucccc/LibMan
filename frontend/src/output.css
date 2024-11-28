@@ -574,6 +574,7 @@ video {
   margin-top: 1rem;
 }
 
+
 .flex {
   display: flex;
 }
@@ -611,6 +612,14 @@ video {
   height: 100vh;
 }
 
+.h-\[20px\] {
+  height: 20px;
+}
+
+.h-\[40px\] {
+  height: 40px;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -645,6 +654,14 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-\[20px\] {
+  width: 20px;
+}
+
+.w-\[40px\] {
+  width: 40px;
 }
 
 .grow {
