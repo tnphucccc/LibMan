@@ -3,6 +3,7 @@ package com.example.backend.service.borrowing;
 import com.example.backend.dto.BorrowingDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.LibraryMapper;
+import com.example.backend.model.Book;
 import com.example.backend.model.Borrowing;
 import com.example.backend.repository.BorrowingRepository;
 import com.example.backend.service.authors.AuthorService;
@@ -52,6 +53,8 @@ public class BorrowingService implements IBorrowingService {
         borrowing.setBorrowedDate(LocalDate.now());
         borrowing.setDueDate(borrowingDTO.getDueDate());
         borrowing.setStatus(Borrowing.BorrowingStatus.valueOf("BORROWED"));
+
+        borrowing.getBook().setStatus(Book.BookStatus.valueOf("BORROWED"));
 
         Borrowing saveBorrowing = borrowingRepository.save(borrowing);
         logger.info("Borrowing created successfully with id: {}", saveBorrowing.getBorrowingId());
