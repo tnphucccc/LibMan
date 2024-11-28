@@ -20,7 +20,7 @@ public class BorrowingDTO {
     private Borrower borrower;
 
     @Size(min = 10, message = "Borrowed date must be in the format yyyy-MM-dd")
-    private LocalDate borrowedDate;
+    private LocalDate borrowedDate = LocalDate.now();
 
     @Size(min = 10, message = "Due date must be in the format yyyy-MM-dd")
     private LocalDate dueDate;
