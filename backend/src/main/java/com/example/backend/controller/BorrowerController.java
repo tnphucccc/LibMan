@@ -16,30 +16,30 @@ public class BorrowerController {
     @Autowired
     private IBorrowerService borrowerService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public List<BorrowerDTO> getAllBorrowers() {
         return borrowerService.getAllBorrowers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BorrowerDTO> getBorrowerById(@PathVariable Long id) {
         BorrowerDTO borrower = borrowerService.getBorrowerById(id);
         return ResponseEntity.ok(borrower);
     }
 
-    @PostMapping
+    @PostMapping({"", "/"})
     public ResponseEntity<BorrowerDTO> createBorrower(@RequestBody BorrowerDTO borrowerDTO) {
         BorrowerDTO newBorrower = borrowerService.createBorrower(borrowerDTO);
         return ResponseEntity.ok(newBorrower);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BorrowerDTO> updateAuthor(@PathVariable Long id, @RequestBody BorrowerDTO borrowerDTO) {
         BorrowerDTO updatedBorrower = borrowerService.updateBorrower(id, borrowerDTO);
         return ResponseEntity.ok(updatedBorrower);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         borrowerService.deleteBorrower(id);
         return ResponseEntity.noContent().build();

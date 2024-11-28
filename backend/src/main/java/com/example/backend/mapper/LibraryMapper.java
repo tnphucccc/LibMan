@@ -47,6 +47,7 @@ public class LibraryMapper {
         authorDTO.setAuthorId(author.getAuthorId());
         authorDTO.setName(author.getName());
         authorDTO.setNationality(author.getNationality());
+        authorDTO.setPortraitUrl(author.getPortraitUrl());
 
         if (author.getBooks() != null) {
             authorDTO.setBooks(author.getBooks().stream()
@@ -61,7 +62,8 @@ public class LibraryMapper {
         return new AuthorDTO.AuthorSummaryDTO(
                 author.getAuthorId(),
                 author.getName(),
-                author.getNationality()
+                author.getNationality(),
+                author.getPortraitUrl()
         );
     }
 
@@ -69,6 +71,7 @@ public class LibraryMapper {
         Author author = new Author();
         author.setName(authorDTO.getName());
         author.setNationality(authorDTO.getNationality());
+        author.setPortraitUrl(authorDTO.getPortraitUrl());
         return author;
     }
 

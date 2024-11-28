@@ -17,25 +17,25 @@ public class BorrowingController {
     @Autowired
     private IBorrowingService borrowingService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     public ResponseEntity<List<BorrowingDTO>> getAllBorrowings() {
         List<BorrowingDTO> borrowings = borrowingService.getAllBorrowings();
         return new ResponseEntity<>(borrowings, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BorrowingDTO> getBorrowingById(@PathVariable("id") Long id) {
         BorrowingDTO borrowing = borrowingService.getBorrowingById(id);
         return new ResponseEntity<>(borrowing, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping({"", "/"})
     public ResponseEntity<BorrowingDTO> createBorrowing(@Valid @RequestBody BorrowingDTO borrowingDTO) {
         BorrowingDTO createdBorrowing = borrowingService.createBorrowing(borrowingDTO);
         return new ResponseEntity<>(createdBorrowing, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BorrowingDTO> updateBorrowing(
             @PathVariable("id") Long id,
             @Valid @RequestBody BorrowingDTO borrowingDTO) {
@@ -43,7 +43,7 @@ public class BorrowingController {
         return new ResponseEntity<>(updatedBorrowing, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     public ResponseEntity<Void> deleteBorrowing(@PathVariable("id") Long id) {
         borrowingService.deleteBorrowing(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
