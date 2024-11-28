@@ -1,15 +1,19 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import Modal from "../components/Modal";
-import { IoMdClose } from "react-icons/io";
+import Modal from "../components/Modal";    
+import BookCard from "../components/BookCard";
+import BorrowBookModal from "../components/BorrowBookModal";
+import CreateBookModal from "../components/CreateBookModal";
+import UpdateBookModal from "../components/UpdateBookModal";
 
 export default function Books() {  
 
     const [bookList, setBookList] = useState([]);
-    const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowModalBorrow, setIsShowModalBorrow] = useState(false);
+    const [isShowModalCreate, setIsShowModalCreate] = useState(false);
+    const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
     const [currentBookId, setCurrentBookId] = useState<number>();
-    const idRef = useRef<HTMLInputElement>(null);
-    const dateRef = useRef<HTMLInputElement>(null);
+    const [currentBook, setCurrentBook] = useState<any>();
 
     const handleGetBooks = async () => {  
         try {
@@ -23,34 +27,119 @@ export default function Books() {
         }
     };
 
-    const handleOpenModal = (id:number) => {
+    const handleOpenModalBorrow = (id:number) => {
         setCurrentBookId(id);
-        setIsShowModal(true);
+        setIsShowModalBorrow(true);
     };
 
-    const handleCloseModal = () => {
-        setIsShowModal(false);
+    const handleCloseModalBorrow = () => {
+        setIsShowModalBorrow(false);
     };
 
-    const handleSubmit = async () => {
+    const handleOpenModalCreate = () => {
+        setIsShowModalCreate(true);
+    };
+
+    const handleCloseModalCreate = () => {
+        setIsShowModalCreate(false);
+    };
+
+    const handleOpenModalUpdate = (book:any) => {
+        setIsShowModalUpdate(true);
+        setCurrentBook(book);
+    };
+
+    const handleCloseModalUpdate = () => {
+        setIsShowModalUpdate(false);
+    };
+
+    const handleSubmitBorrow = async ({id,date}:{id:number, date:Date}) => {
         try {
             const res = await axios.post(import.meta.env.VITE_BASE_URL + '/borrowings', {
                 book:{
                     bookId: currentBookId,
                 },
                 borrower:{
-                    borrowerId: parseInt(idRef.current!.value),
+                    borrowerId: id,
                 },
-                dueDate: dateRef.current!.value
+                dueDate: date
             });
-            if (res.status === 200) {
+            if (res) {
                 console.log(res.data);
                 handleGetBooks();
             }
         } catch (error) {
             console.error(error);
         }
-        handleCloseModal();
+        handleCloseModalBorrow();
+    }
+    
+    const handleSubmitCreate = async ({title, isbn, publicationYear, author,coverImageUrl} : {title: string, isbn: string, publicationYear: string, author: any, coverImageUrl: string}) => {
+
+        try {
+            const res = await axios.post (import.meta.env.VITE_BASE_URL + '/books', {
+                bookId: 0,
+                title: title,
+                isbn: isbn,
+                publicationYear: parseInt(publicationYear),
+                authors: [{
+                    id: author[0].authorId,
+                    name: author[0].name,
+                    nationality: author[0].nationality,
+                    portraitUrl: author[0].portraitUrl
+                }],
+                status: "AVAILABLE",
+                coverImageUrl: coverImageUrl
+            });
+
+            if (res) {
+                console.log(res.data);
+                handleGetBooks();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        handleCloseModalCreate();
+    };
+
+    const handleSubmitUpdate = async ({title, isbn, publicationYear, author, coverImageUrl} : { title: string, isbn: string, publicationYear: string, author: any, coverImageUrl: string}) => {
+        try {
+            const res = await axios.put (import.meta.env.VITE_BASE_URL + '/books/' + currentBook.bookId, {
+                bookId: parseInt(currentBook.bookId),
+                title: title,
+                isbn: isbn,
+                publicationYear: parseInt(publicationYear),
+                authors:[
+                    {
+                        id: parseInt(author.authorId),
+                        name: author.name,
+                        nationality: author.nationality,
+                        portraitUrl: author.portraitUrl
+                    }
+                ],
+                status: currentBook.status,
+                coverImage: coverImageUrl
+            })
+            if (res) {
+                console.log(res.data);
+                handleGetBooks();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        handleCloseModalUpdate();
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            const res = await axios.delete(import.meta.env.VITE_BASE_URL + '/books/' + id);
+            if (res) {
+                console.log(res.data);
+                handleGetBooks();
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     useEffect(() => {
@@ -60,65 +149,23 @@ export default function Books() {
     return (
         <div className="p-4">
             <h2 className="text-center font-bold text-3xl">Book List</h2>
-            <div className="flex flex-row flex-wrap w-full h-fit gap-4 mt-4 justify-center">
+            <button className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg" onClick={()=>handleOpenModalCreate()}>Add book</button>
+            <div className="flex flex-row flex-wrap w-full h-fit gap-6 mt-4 justify-center">
                 { bookList.map((book: any) => (
-                <div key={book.id} className="border-2 border-black w-72 h-96 p-2 rounded-lg">
-                    <img src={book.coverImageUrl} className="w-full h-56"/>
-                    <h3 className="font-semibold text-base truncate">{book.title}</h3>
-                    <p className="text-sm">{book.publicationYear < 0? `${book.publicationYear.toString().substring(1,book.publicationYear.length)} BC`: book.publicationYear}</p>
-                    <p className="text-sm">{book.authors[0].name}</p>
-                    <p className="text-sm">{book.isbn}</p>
-                    <div className="flex justify-end p-2">
-                        <button className={`border-2 border-black p-2 text-base font-semibold rounded-lg bg-black text-white ${book.status == "AVAILABLE" && "hover:bg-white hover:text-black"}  ${book.status != "AVAILABLE" && "cursor-not-allowed opacity-50"}`} disabled = {book.status != "AVAILABLE"? true:false} onClick={() => handleOpenModal(book.bookId)}>Borrow</button>
-                    </div>
-                </div>
+                <BookCard book={book} handleOpenModalBorrow={handleOpenModalBorrow} handleDelete={handleDelete}  handleOpenModalUpdate={handleOpenModalUpdate}/>
             ))}
             </div>
             {/* {Modal for borrowing book} */}
-            <Modal isShowModal={isShowModal}>
-                <div className="border-0 rounded-lg shadow-lg flex flex-col w-96 bg-white p-6">
-                    {/*header*/}
-                    <div className="flex items-center justify-between pb-4 pt-2 border-b-2 border-blueGray-200 rounded-t w-full">
-                        <h3 className="text-lg font-semibold">Borrowing</h3>
-                        <button
-                        className="border-0"
-                        onClick={() => setIsShowModal(false)}
-                        >
-                        <span className="text-lg">
-                            <IoMdClose />
-                        </span>
-                        </button>
-                    </div>
-                    {/*end header*/}
-                    <div className="w-full mt-4">
-                        <div className="flex flex-col text-sm">
-                            <label className="ml-3 opacity-50">Borrower ID</label>
-                            <input className="mt-1 h-10 w-full rounded-lg pl-3 border-2 border-black font-semibold"
-                            type="text" ref={idRef}/>
-                        </div>
-                        <div className="flex flex-col text-sm">
-                            <label className="ml-3 opacity-50">Due date</label>
-                            <input className="mt-1 h-10 w-full rounded-lg pl-3 border-2 border-black font-semibold"
-                            type="date" ref={dateRef}/>
-                        </div>
-                    </div>
-                    <div className="flex justify-end gap-2 mt-4">
-                        <button
-                        type="button"
-                        className=" bg-red-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
-                        onClick={() => handleCloseModal()}
-                        >
-                        Cancel
-                        </button>
-                        <button
-                        type="button"
-                        className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
-                        onClick={() => handleSubmit()}
-                        >
-                        Create
-                        </button>
-                    </div>
-                </div>
+            <Modal isShowModal={isShowModalBorrow}>
+                <BorrowBookModal setIsShowModal={setIsShowModalBorrow}  handleCloseModal={handleCloseModalBorrow} handleSubmit={handleSubmitBorrow}/>
+            </Modal>
+            {/* {Modal for creating book} */}
+            <Modal isShowModal={isShowModalCreate}>
+                <CreateBookModal handleCloseModal={handleCloseModalCreate} handleSubmit={handleSubmitCreate}/>
+            </Modal>
+            {/* {Modal for updating book} */}
+            <Modal isShowModal={isShowModalUpdate}>
+                <UpdateBookModal handleCloseModal={handleCloseModalUpdate} handleSubmit={handleSubmitUpdate} book={currentBook} />
             </Modal>
         </div>
     )
