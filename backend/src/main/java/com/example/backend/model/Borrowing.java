@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -50,11 +51,22 @@ public class Borrowing {
     @Column(name = "updated_at", nullable = false)
     private LocalDate updatedAt;
 
+
     public enum BorrowingStatus {
         BORROWED,
         RETURNED,
         OVERDUE
     }
+
+//    public void setBookId(Long bookId) {
+//        this.book = new Book();
+//        this.book.setBookId(bookId);
+//    }
+//
+//    public void setBorrowerId(Long borrowerId) {
+//        this.borrower = new Borrower();
+//        this.borrower.setBorrowerId(borrowerId);
+//    }
 
     @Override
     public int hashCode() {
