@@ -77,8 +77,8 @@ public class LibraryMapper {
     public BorrowingDTO toBorrowingDTO(Borrowing borrowing) {
         BorrowingDTO borrowingDTO = new BorrowingDTO();
         borrowingDTO.setBorrowingId(borrowing.getBorrowingId());
-        borrowingDTO.setBook(borrowing.getBook());
-        borrowingDTO.setBorrower(borrowing.getBorrower());
+        borrowingDTO.setBookId(borrowing.getBook().getBookId());
+        borrowingDTO.setBorrowerId(borrowing.getBorrower().getBorrowerId());
         borrowingDTO.setBorrowedDate(borrowing.getBorrowedDate());
         borrowingDTO.setDueDate(borrowing.getDueDate());
         borrowingDTO.setStatus(borrowing.getStatus().name());
