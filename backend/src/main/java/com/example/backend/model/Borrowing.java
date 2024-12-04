@@ -58,16 +58,6 @@ public class Borrowing {
         OVERDUE
     }
 
-//    public void setBookId(Long bookId) {
-//        this.book = new Book();
-//        this.book.setBookId(bookId);
-//    }
-//
-//    public void setBorrowerId(Long borrowerId) {
-//        this.borrower = new Borrower();
-//        this.borrower.setBorrowerId(borrowerId);
-//    }
-
     @Override
     public int hashCode() {
         return Objects.hash(borrowingId);
