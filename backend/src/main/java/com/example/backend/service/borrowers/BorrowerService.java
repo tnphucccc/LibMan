@@ -90,7 +90,7 @@ public class BorrowerService implements IBorrowerService {
                 persistedBorrowings.add(existingBorrowing.get());
             } else {
                 Borrowing newBorrowing = new Borrowing();
-                newBorrowing.setBook(borrowingDTO.getBook());
+                newBorrowing.getBook().setBookId(borrowingDTO.getBookId());
                 newBorrowing.setStatus(Borrowing.BorrowingStatus.valueOf(borrowingDTO.getStatus()));
                 newBorrowing.setBorrowedDate(borrowingDTO.getBorrowedDate());
                 newBorrowing.setDueDate(borrowingDTO.getDueDate());

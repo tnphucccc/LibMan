@@ -15,9 +15,9 @@ import java.time.LocalDate;
 public class BorrowingDTO {
     private Long borrowingId;
 
-    private Book book;
+    private Long bookId;
 
-    private Borrower borrower;
+    private Long borrowerId;
 
     @Size(min = 10, message = "Borrowed date must be in the format yyyy-MM-dd")
     private LocalDate borrowedDate = LocalDate.now();
