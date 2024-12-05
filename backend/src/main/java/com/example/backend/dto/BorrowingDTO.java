@@ -25,6 +25,9 @@ public class BorrowingDTO {
     @Size(min = 10, message = "Due date must be in the format yyyy-MM-dd")
     private LocalDate dueDate;
 
+    @Size(min = 10, message = "Returned date must be in the format yyyy-MM-dd")
+    private LocalDate returnedDate;
+
     private LocalDate createdAt;
     private LocalDate updatedAt;
 

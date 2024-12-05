@@ -50,7 +50,7 @@ public class BorrowingService implements IBorrowingService {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found with id: " + borrowingId));
         BorrowingDTO borrowingDTO = libraryMapper.toBorrowingDTO(borrowing);
-        return libraryMapper.toBorrowingDTO(borrowing);
+        return borrowingDTO;
     }
 
     @Override
@@ -97,6 +97,10 @@ public class BorrowingService implements IBorrowingService {
         }
         if (borrowingDTO.getDueDate() != null) {
             existingBorrowing.setDueDate(borrowingDTO.getDueDate());
+        }
+
+        if (borrowingDTO.getReturnedDate() != null) {
+            existingBorrowing.setReturnedDate(borrowingDTO.getReturnedDate());
         }
 
         Borrowing updateBorrowing = borrowingRepository.save(existingBorrowing);
