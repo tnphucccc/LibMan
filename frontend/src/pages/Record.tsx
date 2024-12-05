@@ -7,15 +7,13 @@ export interface Record {
   borrowerId: number,
   borrowDate: string,
   dueDate: string,
-  createAt: string,
-  updateAt: string,
+  returnDate: string,
   status: string
 }
-
 export default function Record() {
 
   const [bookList, setBookList] = useState<Book[]>([]);
-  const [recordList, setRecordList] = useState<Book[]>([]);
+  const [recordList, setRecordList] = useState<Record[]>([]);
 
   return (
     <div>
