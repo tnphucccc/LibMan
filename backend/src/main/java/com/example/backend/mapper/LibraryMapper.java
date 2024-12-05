@@ -81,6 +81,7 @@ public class LibraryMapper {
         borrowingDTO.setBorrowerId(borrowing.getBorrower().getBorrowerId());
         borrowingDTO.setBorrowedDate(borrowing.getBorrowedDate());
         borrowingDTO.setDueDate(borrowing.getDueDate());
+        borrowingDTO.setReturnedDate(borrowing.getReturnedDate());
         borrowingDTO.setStatus(borrowing.getStatus().name());
         return borrowingDTO;
     }
