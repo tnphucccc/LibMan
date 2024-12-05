@@ -993,7 +993,6 @@ video {
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
-
 .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
@@ -1175,10 +1174,12 @@ video {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+
 }
 
 @media (min-width: 768px) {
   .md\:w-1\/2 {
     width: 50%;
   }
+
 }

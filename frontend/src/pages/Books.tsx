@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../components/Modal";    
 import BookCard from "../components/BookCard";
 import BorrowBookModal from "../components/BorrowBookModal";
@@ -145,13 +145,15 @@ export default function Books() {
     useEffect(() => {
         handleGetBooks();
     },[]);
+
     
     return (
+        bookList && 
         <div className="p-4">
             <h2 className="text-center font-bold text-3xl">Book List</h2>
             <button className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg" onClick={()=>handleOpenModalCreate()}>Add book</button>
             <div className="flex flex-row flex-wrap w-full h-fit gap-6 mt-4 justify-center">
-                { bookList.map((book: any) => (
+                {bookList.map((book: any) => (
                 <BookCard book={book} handleOpenModalBorrow={handleOpenModalBorrow} handleDelete={handleDelete}  handleOpenModalUpdate={handleOpenModalUpdate}/>
             ))}
             </div>
