@@ -1,6 +1,6 @@
 import { IoMdClose } from "react-icons/io";
 
-import { RefObject, useRef } from "react";
+import { useRef } from "react";
 
 interface BorrowBookModalProps {
   setIsShowModal: (isShow: boolean) => void;

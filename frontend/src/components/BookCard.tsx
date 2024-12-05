@@ -1,12 +1,4 @@
-interface Book {
-  bookId: number;
-  coverImageUrl: string;
-  title: string;
-  publicationYear: number;
-  authors: { name: string }[];
-  isbn: string;
-  status: string;
-}
+import { Book } from "../pages/Books";
 
 interface BookCardProps {
   book: Book;
@@ -22,7 +14,7 @@ export default function BookCard({ book, handleOpenModalBorrow, handleDelete,  h
     <div key={book.bookId} className="border-2 border-black w-72 h-96 p-2 rounded-lg cursor-pointer" >
         <img src={book.coverImageUrl} className="w-full h-56"/>
         <h3 className="font-semibold text-base truncate">{book.title}</h3>
-        <p className="text-sm">{book.publicationYear < 0? `${book.publicationYear.toString().substring(1,book.publicationYear.length)} BC`: book.publicationYear}</p>
+        <p className="text-sm">{book.publicationYear < 0? `${book.publicationYear.toString().substring(1,book.publicationYear.toString().length)} BC`: book.publicationYear}</p>
         <p className="text-sm">{book.authors[0] ? book.authors[0].name : 'Anonymous'}</p>
         <p className="text-sm">{book.isbn}</p>
         <div className="flex justify-end gap-4 p-2">

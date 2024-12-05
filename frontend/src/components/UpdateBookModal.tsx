@@ -1,23 +1,11 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-
-interface Book {
-  title: string;
-  isbn: string;
-  publicationYear: string;
-  authors: {
-    id: number,
-    name: string,
-    nationality: string,
-    portraitUrl: string,
-  }[],
-  coverImageUrl: string;
-}
+import { Book } from "../pages/Books";
 
 interface UpdateBookModalProps {
   handleCloseModal: () => void;
-  handleSubmit: (book: Book) => void;
+  handleSubmit: ({title, isbn, publicationYear, authors, coverImageUrl} : { title: string, isbn: string, publicationYear: string, authors: Author, coverImageUrl: string}) => void;
   book: Book;
 }
 
@@ -93,7 +81,7 @@ export default function UpdateBookModal({ handleCloseModal, handleSubmit, book }
             <div className="flex flex-col text-sm mb-4">
                 <label className="ml-3 opacity-50">Author</label>
                 <select className="mt-1 h-10 w-full rounded-lg pl-3 border-2 border-black font-semibold"
-                ref={authorRef} defaultValue={book.authors[0].id}>
+                ref={authorRef} defaultValue={book.authors[0]?.id}>
                     {authorList.map((author) => 
                         <option key={author.authorId} value={author.authorId}>      {author.name} 
                         </option>
@@ -117,7 +105,7 @@ export default function UpdateBookModal({ handleCloseModal, handleSubmit, book }
             <button
             type="button"
             className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
-            onClick={() => handleSubmit({title: titleRef.current!.value, isbn: isbnRef.current!.value, publicationYear: yearRef.current!.value, author: authorList.filter((author)=> author.authorId == Number(authorRef.current!.value))[0], coverImageUrl: imageRef.current!.value})}
+            onClick={() => handleSubmit({title: titleRef.current!.value, isbn: isbnRef.current!.value, publicationYear: yearRef.current!.value, authors: authorList.filter((author)=> author.authorId == Number(authorRef.current!.value))[0], coverImageUrl: imageRef.current!.value})}
             >
             Update
             </button>

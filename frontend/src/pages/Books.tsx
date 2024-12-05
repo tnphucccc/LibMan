@@ -4,16 +4,31 @@ import Modal from "../components/Modal";
 import BookCard from "../components/BookCard";
 import BorrowBookModal from "../components/BorrowBookModal";
 import CreateBookModal from "../components/CreateBookModal";
-import UpdateBookModal from "../components/UpdateBookModal";
+import UpdateBookModal, { Author } from "../components/UpdateBookModal";
+
+export interface Book {
+  bookId: number,
+  coverImageUrl: string,
+  title: string,
+  publicationYear: number,
+  authors: { 
+    id:number,
+    name: string,
+    nationality: string,
+    portraitUrl: string
+  }[],
+  isbn: string,
+  status: string,
+}
 
 export default function Books() {  
 
-    const [bookList, setBookList] = useState([]);
+    const [bookList, setBookList] = useState<Book[]>([]);
     const [isShowModalBorrow, setIsShowModalBorrow] = useState(false);
     const [isShowModalCreate, setIsShowModalCreate] = useState(false);
     const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
     const [currentBookId, setCurrentBookId] = useState<number>();
-    const [currentBook, setCurrentBook] = useState<any>();
+    const [currentBook, setCurrentBook] = useState<Book>();
 
     const handleGetBooks = async () => {  
         try {
@@ -56,12 +71,8 @@ export default function Books() {
     const handleSubmitBorrow = async ({id,date}:{id:number, date:Date}) => {
         try {
             const res = await axios.post(import.meta.env.VITE_BASE_URL + '/borrowings', {
-                book:{
-                    bookId: currentBookId,
-                },
-                borrower:{
-                    borrowerId: id,
-                },
+                bookId: currentBookId,
+                borrowerId: id,
                 dueDate: date
             });
             if (res) {
@@ -102,22 +113,22 @@ export default function Books() {
         handleCloseModalCreate();
     };
 
-    const handleSubmitUpdate = async ({title, isbn, publicationYear, author, coverImageUrl} : { title: string, isbn: string, publicationYear: string, author: any, coverImageUrl: string}) => {
+    const handleSubmitUpdate = async ({title, isbn, publicationYear, authors, coverImageUrl} : { title: string, isbn: string, publicationYear: string, authors: Author, coverImageUrl: string}) => {
         try {
-            const res = await axios.put (import.meta.env.VITE_BASE_URL + '/books/' + currentBook.bookId, {
-                bookId: parseInt(currentBook.bookId),
+            const res = await axios.put (import.meta.env.VITE_BASE_URL + '/books/' + currentBook!.bookId, {
+                bookId: currentBook!.bookId,
                 title: title,
                 isbn: isbn,
                 publicationYear: parseInt(publicationYear),
                 authors:[
                     {
-                        id: parseInt(author.authorId),
-                        name: author.name,
-                        nationality: author.nationality,
-                        portraitUrl: author.portraitUrl
+                        id: authors.authorId,
+                        name: authors.name,
+                        nationality: authors.nationality,
+                        portraitUrl: authors.portraitUrl
                     }
                 ],
-                status: currentBook.status,
+                status: currentBook!.status,
                 coverImage: coverImageUrl
             })
             if (res) {
@@ -167,7 +178,7 @@ export default function Books() {
             </Modal>
             {/* {Modal for updating book} */}
             <Modal isShowModal={isShowModalUpdate}>
-                <UpdateBookModal handleCloseModal={handleCloseModalUpdate} handleSubmit={handleSubmitUpdate} book={currentBook} />
+                <UpdateBookModal handleCloseModal={handleCloseModalUpdate} handleSubmit={handleSubmitUpdate} book={currentBook!} />
             </Modal>
         </div>
     )
