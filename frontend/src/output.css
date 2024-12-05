@@ -640,6 +640,14 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .flex {
   display: flex;
 }
@@ -993,6 +1001,7 @@ video {
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
+
 .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
@@ -1021,6 +1030,11 @@ video {
 .px-16 {
   padding-left: 4rem;
   padding-right: 4rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .py-2 {
@@ -1174,12 +1188,10 @@ video {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
-
 }
 
 @media (min-width: 768px) {
   .md\:w-1\/2 {
     width: 50%;
   }
-
 }
