@@ -103,6 +103,10 @@ public class BorrowingService implements IBorrowingService {
             existingBorrowing.setReturnedDate(borrowingDTO.getReturnedDate());
         }
 
+        if (borrowingDTO.getStatus() != null) {
+            existingBorrowing.setStatus(Borrowing.BorrowingStatus.valueOf(borrowingDTO.getStatus()));
+        }
+
         Borrowing updateBorrowing = borrowingRepository.save(existingBorrowing);
         logger.info("Borrowing updated successfully with id: {}", updateBorrowing.getBorrowingId());
         return libraryMapper.toBorrowingDTO(updateBorrowing);
