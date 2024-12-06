@@ -19,7 +19,7 @@ export default function Record() {
   const [bookList, setBookList] = useState<Book[]>([]);
   const [recordList, setRecordList] = useState<Record[]>([]);
   const [isShowModalReturn, setIsShowModalReturn] = useState(false);
-  const [currentRecordId, setCurrentRecordId] = useState<number>();
+  const [currentRecord, setCurrentRecord] = useState<Record>();
 
   const handleGetBooks = async () => {
     try {
@@ -45,13 +45,29 @@ export default function Record() {
     }
   };
 
-  const handleOpenModalReturn = (id: number) => {
-    setCurrentRecordId(id);
+  const handleOpenModalReturn = (record : Record) => {
+    setCurrentRecord(record);
     setIsShowModalReturn(true);
   }
 
   const handleCloseModalReturn = () => {
     setIsShowModalReturn(false);
+  };
+
+  const handleReturn = async (date: string) => {
+    const updatedRecord = {...currentRecord, returnedDate: date, status: "RETURNED"};
+    console.log(updatedRecord);
+    
+    try {
+      const res = await axios.put(import.meta.env.VITE_BASE_URL + '/borrowings/' + currentRecord?.borrowingId, updatedRecord);
+      if (res.status) {
+        console.log(res.data);
+        handleGetRecords();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    handleCloseModalReturn();
   };
 
 
@@ -114,7 +130,7 @@ export default function Record() {
                           {record.status}
                       </td>
                       <td className="px-6 py-4">
-                          <button className={`w-20 border-2 border-blue-500 p-2 text-base font-semibold rounded-lg bg-blue-500 text-white ${record.status != "RETURNED" && "hover:bg-white hover:text-black"}  ${record.status == "RETURNED" && "cursor-not-allowed opacity-50"}`} disabled = {record.status == "RETURNED"? true:false}onClick={() => handleOpenModalReturn(record.borrowingId)}>Return</button>
+                          <button className={`w-20 border-2 border-blue-500 p-2 text-base font-semibold rounded-lg bg-blue-500 text-white ${record.status != "RETURNED" && "hover:bg-white hover:text-black"}  ${record.status == "RETURNED" && "cursor-not-allowed opacity-50"}`} disabled = {record.status == "RETURNED"? true:false}onClick={() => handleOpenModalReturn(record)}>Return</button>
                       </td>
                   </tr>
                 ))}
@@ -123,7 +139,7 @@ export default function Record() {
       </div>
 
       <Modal isShowModal={isShowModalReturn}>
-        <ReturnBookModal handleCloseModal={handleCloseModalReturn} handleSubmit={handleGetRecords}/>
+        <ReturnBookModal handleCloseModal={handleCloseModalReturn} handleSubmit={handleReturn}/>
       </Modal>
 
     </div>

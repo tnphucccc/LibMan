@@ -18,9 +18,9 @@ export default function BookCard({ book, handleOpenModalBorrow, handleDelete,  h
         <p className="text-sm">{book.authors[0] ? book.authors[0].name : 'Anonymous'}</p>
         <p className="text-sm">{book.isbn}</p>
         <div className="flex justify-end gap-4 p-2">
-            {book.status == "AVAILABLE" && <button className=" w-20 border-2 border-red-500 hover:bg-white hover:text-black p-2 font-semibold rounded-lg bg-red-500 text-white" onClick={()=>handleDelete(book.bookId)}>Delete</button>}
+            <button className= {`w-20 border-2 border-red-500  p-2 font-semibold rounded-lg bg-red-500 text-white ${book.status == 'BORROWED' ? "cursor-not-allowed opacity-50" : "hover:bg-white hover:text-black" }`} onClick={()=>handleDelete(book.bookId)}>Delete</button>
             <button className=" w-20 border-2 border-yellow-500 hover:bg-white hover:text-black p-2 font-semibold rounded-lg bg-yellow-500 text-white" onClick={()=>handleOpenModalUpdate(book)}>Edit</button>
-            <button className={`w-20 border-2 border-blue-500 p-2 text-base font-semibold rounded-lg bg-blue-500 text-white ${book.status == "AVAILABLE" && "hover:bg-white hover:text-black"}  ${book.status != "AVAILABLE" && "cursor-not-allowed opacity-50"}`} disabled = {book.status != "AVAILABLE"? true:false} onClick={() => handleOpenModalBorrow(book.bookId)}>Borrow</button>
+            <button className={`w-20 border-2 border-blue-500 p-2 text-base font-semibold rounded-lg bg-blue-500 text-white ${book.status == "AVAILABLE" ? "hover:bg-white hover:text-black" : "cursor-not-allowed opacity-50" }`} disabled = {book.status != "AVAILABLE"? true:false} onClick={() => handleOpenModalBorrow(book.bookId)}>Borrow</button>
         </div>
     </div>
   )

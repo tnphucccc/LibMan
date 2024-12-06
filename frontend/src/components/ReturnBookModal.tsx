@@ -1,7 +1,12 @@
 import { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 
-export default function ReturnBookModal({ handleCloseModal, handleSubmit }) {
+interface ReturnBookModalProps {
+  handleCloseModal: () => void;
+  handleSubmit: (date : string) => void;
+}
+
+export default function ReturnBookModal({ handleCloseModal, handleSubmit }: ReturnBookModalProps) {
 
     const dateRef = useRef<HTMLInputElement>(null);
 
@@ -38,7 +43,7 @@ export default function ReturnBookModal({ handleCloseModal, handleSubmit }) {
             <button
             type="button"
             className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
-            onClick={() => handleSubmit({title: titleRef.current!.value, isbn: isbnRef.current!.value, publicationYear: yearRef.current!.value, authors: authorList.filter((author)=> author.authorId == Number(authorRef.current!.value))[0], coverImageUrl: imageRef.current!.value})}
+            onClick={() => handleSubmit(dateRef.current?.value || "")}
             >
             Update
             </button>
