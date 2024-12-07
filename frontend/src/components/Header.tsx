@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export default function Header() {
     const navigate = useNavigate();
+    const currPage = useLocation().pathname;  
 
     const handleAuthors = () => {
         navigate('/Authors');
@@ -37,19 +38,19 @@ export default function Header() {
         </div>
 
         <div className="flex gap-4">
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleBooks()}>
-                    Books
+            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Books"? "bg-white text-orange-500": ""}`} onClick={()=>handleBooks()}>
+                Books
             </button>
 
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleAuthors()}>
+            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Authors"? "bg-white text-orange-500": ""}`} onClick={()=>handleAuthors()}>
                     Authors
             </button>
 
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleRecord()}>
+            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Record"? "bg-white text-orange-500": ""}`} onClick={()=>handleRecord()}>
                     Record
             </button>
 
-            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleBorrowers()}>
+            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Borrowers"? "bg-white text-orange-500": ""}`} onClick={()=>handleBorrowers()}>
                     Borrowers
             </button>
         </div>
