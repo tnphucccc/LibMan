@@ -3,6 +3,7 @@ import { Book } from "./Books";
 import axios from "axios";
 import Modal from "../components/Modal";
 import ReturnBookModal from "../components/ReturnBookModal";
+import SearchBar from "../components/SearchBar";
 
 export interface Record {
   borrowingId: number,
@@ -20,6 +21,7 @@ export default function Record() {
   const [recordList, setRecordList] = useState<Record[]>([]);
   const [isShowModalReturn, setIsShowModalReturn] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<Record>();
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleGetBooks = async () => {
     try {
@@ -44,6 +46,12 @@ export default function Record() {
       console.log(error);
     }
   };
+
+  const searchList = recordList.filter((record) => {
+    const searchByTitle = bookList.find(book => book.bookId === record.bookId)?.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const searchByBorrowerId = record.borrowerId.toString().includes(searchQuery);
+    return searchByTitle || searchByBorrowerId;
+  });
 
   const handleOpenModalReturn = (record : Record) => {
     setCurrentRecord(record);
@@ -79,7 +87,7 @@ export default function Record() {
   return (
     <div className="flex flex-col w-full h-screen p-4">
       <div className="mb-4">
-        <p className="text-center text-3xl font-bold">Record List</p>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} placeholder="Search by Book Title or Borrower's ID"/>
       </div>
       <div className="relative overflow-x-auto w-full">
           <table className="w-full text-left rtl:text-right text-gray-500">
@@ -109,7 +117,7 @@ export default function Record() {
                   </tr>
               </thead>
               <tbody>
-                {recordList.map((record) => (
+                {searchList.map((record) => (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
                       <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {bookList.find(book => book.bookId === record.bookId)?.title}

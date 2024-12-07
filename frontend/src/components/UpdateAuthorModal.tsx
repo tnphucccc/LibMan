@@ -1,13 +1,6 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
-
-
-interface Author {
-  name: string;
-  nationality: string;
-  portraitUrl: string;
-}
+import { Author } from "../pages/Authors";
 
 interface UpdateAuthorModalProps {
   handleCloseModal: () => void;
@@ -78,6 +71,8 @@ export default function UpdateAuthorModal({handleCloseModal, handleSubmit, autho
           className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
           onClick={() =>
             handleSubmit({
+              authorId: author.authorId,
+              books: author.books,
               name: nameRef.current!.value,
               nationality: nationalityRef.current!.value,
               portraitUrl: portraitUrlRef.current!.value,

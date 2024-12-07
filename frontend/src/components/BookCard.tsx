@@ -11,7 +11,7 @@ export default function BookCard({ book, handleOpenModalBorrow, handleDelete,  h
 
 
   return (
-    <div key={book.bookId} className="border-2 border-black w-72 h-96 p-2 rounded-lg cursor-pointer" >
+    <div key={book.bookId} className="border-2 border-black bg-gray-200 w-72 h-96 p-2 rounded-lg cursor-pointer" >
         <img src={book.coverImageUrl} className="w-full h-56"/>
         <h3 className="font-semibold text-base truncate">{book.title}</h3>
         <p className="text-sm">{book.publicationYear < 0? `${book.publicationYear.toString().substring(1,book.publicationYear.toString().length)} BC`: book.publicationYear}</p>

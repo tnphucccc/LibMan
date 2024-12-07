@@ -5,13 +5,28 @@ import AuthorCard from "../components/AuthorCard";
 import CreateAuthorModal from "../components/CreateAuthorModal";
 import UpdateAuthorModal from "../components/UpdateAuthorModal";
 import AuthorDetailModal from "../components/AuthorDetailModal";
+import SearchBar from "../components/SearchBar";
+
+export interface Author {
+  authorId : number,
+  name: string,
+  nationality: string,
+  portraitUrl: string,
+  books: {
+    id: number,
+    title: string,
+    isbn: string,
+    status: string,
+  }[];
+}
 
 export default function Authors() {
   const [authorList, setAuthorList] = useState([]);
   const [isShowModalCreate, setIsShowModalCreate] = useState(false);
   const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
   const [isShowModalDetail, setIsShowModalDetail] = useState(false); // New state
-  const [currentAuthor, setCurrentAuthor] = useState<any>();
+  const [currentAuthor, setCurrentAuthor] = useState<Author>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleOpenModalDetail = (author: any) => {
     setCurrentAuthor(author);
@@ -31,6 +46,11 @@ export default function Authors() {
       console.error(error);
     }
   };
+
+  const searchList = authorList.filter((author: Author) => {
+    const searchByName = author.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return searchByName;
+  });
 
   const handleOpenModalCreate = () => {
     setIsShowModalCreate(true);
@@ -76,22 +96,23 @@ export default function Authors() {
   };
 
   const handleSubmitUpdate = async ({
+    authorId,
     name,
     nationality,
     portraitUrl,
-  }: {
-    name: string;
-    nationality: string;
-    portraitUrl: string;
-  }) => {
+    books,
+  }: Author) => {
+    const updatedAuthor = {
+      authorId,
+      name,
+      nationality,
+      portraitUrl,
+      books,
+    };
     try {
       const res = await axios.put(
-        import.meta.env.VITE_BASE_URL + "/authors/" + currentAuthor.authorId,
-        {
-          name,
-          nationality,
-          portraitUrl,
-        }
+        import.meta.env.VITE_BASE_URL + "/authors/" + currentAuthor?.authorId,
+        updatedAuthor
       );
 
       if (res) {
@@ -122,15 +143,17 @@ export default function Authors() {
 
   return (
     <div className="p-4">
-      <h2 className="text-center font-bold text-3xl">Author List</h2>
-      <button
-        className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg"
-        onClick={() => handleOpenModalCreate()}
-      >
-        Add Author
-      </button>
+      <div className="flex flex-row justify-between items-center px-4">
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} placeholder="Search by Author's name" />
+        <button
+          className="border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black rounded-lg"
+          onClick={() => handleOpenModalCreate()}
+          >
+          Add Author
+        </button>
+      </div>
       <div className="flex flex-row flex-wrap w-full h-fit gap-6 mt-4 justify-center">
-        {authorList.map((author: any) => (
+        {searchList.map((author: any) => (
           <AuthorCard
             key={author.authorId}
             author={author}
@@ -153,13 +176,13 @@ export default function Authors() {
         <UpdateAuthorModal
           handleCloseModal={handleCloseModalUpdate}
           handleSubmit={handleSubmitUpdate}
-          author={currentAuthor}
+          author={currentAuthor!}
         />
       </Modal>
 
       {/* Modal for displaying author details */}
       <Modal isShowModal={isShowModalDetail}>
-        <AuthorDetailModal handleCloseModal={handleCloseModalDetail} author={currentAuthor} />
+        <AuthorDetailModal handleCloseModal={handleCloseModalDetail} author={currentAuthor!} />
       </Modal>
     </div>
   );

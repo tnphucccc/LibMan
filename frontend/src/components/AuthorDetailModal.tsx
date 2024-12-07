@@ -1,12 +1,5 @@
 import { IoMdClose } from "react-icons/io";
-
-interface Author {
-  authorId: number;
-  portraitUrl: string;
-  name: string;
-  nationality: string;
-  books: { title: string; coverImageUrl: string; bookId: number }[];
-}
+import { Author } from "../pages/Authors";
 
 interface AuthorDetailModalProps {
   author: Author;
@@ -34,7 +27,7 @@ export default function AuthorDetailModal({
                   <h4 className="text-xl font-semibold">Works</h4>
                   <ul className="list-disc list-inside mt-2 w-full">
                     {author.books.map((book) => (
-                      <ul key={book.bookId} className="text-base truncate">
+                      <ul key={book.id} className="text-base truncate">
                         <p>{book.title}</p>
                       </ul>
                     ))}
@@ -44,5 +37,3 @@ export default function AuthorDetailModal({
     </div>
   );
 }
-
-

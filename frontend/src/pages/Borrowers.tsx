@@ -5,6 +5,7 @@ import UpdateBorrowerModal from "../components/UpdateBorrowerModal";
 import CreateBorrowerModal from "../components/CreateBorrowerModal";
 import BorrowerDetailModal from "../components/BorrowerDetailModal";
 import { Book } from "./Books";
+import SearchBar from "../components/SearchBar";
 
 export interface Borrower {
   id : number;
@@ -32,6 +33,7 @@ export default function Borrowers() {
   const [isShowModalCreate, setIsShowModalCreate] = useState(false);
   const [isShowModalDetail, setIsShowModalDetail] = useState(false);
   const [currentBorrower, setCurrentBorrower] = useState<Borrower>();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleOpenModalDetail = async (borrower: any) => {
     try {
@@ -83,15 +85,13 @@ const handleDelete = async (borrower: any) => {
   }
 }
 
-const handleSubmitCreate = async ({name,email,phone,status,address} : {name: string, email:string, phone: string, status: string, address: string}) => {
+const handleSubmitCreate = async ({name,email,phone,address} : {name: string, email:string, phone: string, address: string}) => {
 
   try {
       const res = await axios.post (import.meta.env.VITE_BASE_URL + '/borrowers', {
-          id: 0,
           name: name,
           email: email,
           phone: phone,
-          status: status,
           address: address
       });
 
@@ -135,6 +135,12 @@ const handleGetBorrowers = async () => {
   }
 };
 
+const searchList = borrowerList.filter((borrower) => {
+  const searchByName = borrower.name.toLowerCase().includes(searchQuery.toLowerCase());
+  const searchById = borrower.id.toString().includes(searchQuery);
+  return searchByName || searchById;
+});
+
 const handleGetBooks = async () => {  
   try {
       const res = await axios.get (import.meta.env.VITE_BASE_URL + '/books');
@@ -152,8 +158,8 @@ useEffect(() => {
 }, []);
   return (
     <div className="flex flex-col w-full h-screen p-4">
-      <div className="mb-4">
-        <p className="text-center text-3xl font-bold">Borrower List</p>
+      <div className="flex flex-row justify-between items-center mb-4">
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} placeholder="Search by Borrower's name or id" />
         <button onClick={()=>handleOpenModalCreate()} className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg" >Add Borrower</button>
       </div>
       <div className="relative overflow-x-auto w-full">
@@ -184,7 +190,7 @@ useEffect(() => {
                   </tr>
               </thead>
               <tbody>
-                {borrowerList.map((borrower) => (
+                {searchList.map((borrower) => (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
                       <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {borrower.id}

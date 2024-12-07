@@ -2,20 +2,13 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { Book } from "../pages/Books";
+import { Author } from "../pages/Authors";
 
 interface UpdateBookModalProps {
   handleCloseModal: () => void;
   handleSubmit: ({title, isbn, publicationYear, authors, coverImageUrl} : { title: string, isbn: string, publicationYear: string, authors: Author, coverImageUrl: string}) => void;
   book: Book;
 }
-
-export interface Author {
-    authorId: number;
-    name: string;
-    nationality: string;
-    portraitUrl: string;
-    books: {id: number, title: string, isbn: string, status: string}[];
-};
 
 export default function UpdateBookModal({ handleCloseModal, handleSubmit, book }: UpdateBookModalProps) {
 

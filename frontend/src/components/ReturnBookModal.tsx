@@ -14,7 +14,7 @@ export default function ReturnBookModal({ handleCloseModal, handleSubmit }: Retu
     <div className="border-0 rounded-lg shadow-lg flex flex-col w-96 bg-white p-6">
         {/*header*/}
         <div className="flex items-center justify-between pb-4 pt-2 border-b-2 border-blueGray-200 rounded-t w-full">
-            <h3 className="text-lg font-semibold">Updating book</h3>
+            <h3 className="text-lg font-semibold">Returning book</h3>
             <button
             className="border-0"
             onClick={() => handleCloseModal()}
