@@ -15,7 +15,7 @@ interface UpdateAuthorModalProps {
   author: Author;
 }
 
-export default function UpdateAuthorModal({handleCloseModal, handleSubmit, author,}: UpdateAuthorModalProps) {
+export default function UpdateAuthorModal({handleCloseModal, handleSubmit, author}: UpdateAuthorModalProps) {
   const nameRef = useRef<HTMLInputElement>(null);
   const nationalityRef = useRef<HTMLInputElement>(null);
   const portraitUrlRef = useRef<HTMLInputElement>(null);
