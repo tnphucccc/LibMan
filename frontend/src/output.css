@@ -868,10 +868,6 @@ video {
   row-gap: 1rem;
 }
 
-.gap-y-5 {
-  row-gap: 1.25rem;
-}
-
 .overflow-x-auto {
   overflow-x: auto;
 }

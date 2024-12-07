@@ -39,7 +39,9 @@ public class BorrowingService implements IBorrowingService {
     @Override
     public List<BorrowingDTO> getAllBorrowings() {
         logger.info("Fetching all borrowings from the database");
-        return borrowingRepository.findAll().stream()
+        List<Borrowing> borrowings = borrowingRepository.findAll();
+        borrowings.forEach(this::updateOverdueStatus);
+        return borrowings.stream()
                 .map(libraryMapper::toBorrowingDTO)
                 .collect(Collectors.toList());
     }
@@ -49,8 +51,8 @@ public class BorrowingService implements IBorrowingService {
         logger.info("Fetching borrowing with id: {}", borrowingId);
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found with id: " + borrowingId));
-        BorrowingDTO borrowingDTO = libraryMapper.toBorrowingDTO(borrowing);
-        return borrowingDTO;
+        updateOverdueStatus(borrowing);
+        return libraryMapper.toBorrowingDTO(borrowing);
     }
 
     @Override
@@ -105,6 +107,11 @@ public class BorrowingService implements IBorrowingService {
 
         if (borrowingDTO.getStatus() != null) {
             existingBorrowing.setStatus(Borrowing.BorrowingStatus.valueOf(borrowingDTO.getStatus()));
+            if (existingBorrowing.getStatus().equals(Borrowing.BorrowingStatus.RETURNED)) {
+                Book book = existingBorrowing.getBook();
+                book.setStatus(Book.BookStatus.AVAILABLE);
+                bookRepository.save(book);
+            }
         }
 
         Borrowing updateBorrowing = borrowingRepository.save(existingBorrowing);
@@ -119,5 +126,12 @@ public class BorrowingService implements IBorrowingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found with id: " + borrowingId));
         borrowingRepository.delete(borrowing);
         logger.info("Borrowing deleted successfully with id: {}", borrowingId);
+    }
+
+    private void updateOverdueStatus(Borrowing borrowing) {
+        if (borrowing.getDueDate().isBefore(LocalDate.now()) && borrowing.getStatus().equals(Borrowing.BorrowingStatus.BORROWED)) {
+            borrowing.setStatus(Borrowing.BorrowingStatus.OVERDUE);
+            borrowingRepository.save(borrowing);
+        }
     }
 }
