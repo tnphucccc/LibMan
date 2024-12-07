@@ -38,19 +38,19 @@ export default function Header() {
         </div>
 
         <div className="flex gap-4">
-            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Books"? "bg-white text-orange-500": ""}`} onClick={()=>handleBooks()}>
+            <button className={` font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Books"? "bg-white text-orange-500": "text-white"}`} onClick={()=>handleBooks()}>
                 Books
             </button>
 
-            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Authors"? "bg-white text-orange-500": ""}`} onClick={()=>handleAuthors()}>
+            <button className={` font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Authors"? "bg-white text-orange-500": "text-white"}`} onClick={()=>handleAuthors()}>
                     Authors
             </button>
 
-            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Record"? "bg-white text-orange-500": ""}`} onClick={()=>handleRecord()}>
+            <button className={`font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Record"? "bg-white text-orange-500": "text-white"}`} onClick={()=>handleRecord()}>
                     Record
             </button>
 
-            <button className={`text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Borrowers"? "bg-white text-orange-500": ""}`} onClick={()=>handleBorrowers()}>
+            <button className={`font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24 ${currPage == "/Borrowers"? "bg-white text-orange-500": "text-white"}`} onClick={()=>handleBorrowers()}>
                     Borrowers
             </button>
         </div>

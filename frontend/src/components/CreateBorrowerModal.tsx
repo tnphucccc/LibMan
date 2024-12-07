@@ -1,10 +1,10 @@
 import { IoMdClose } from "react-icons/io";
-import {useRef} from "react";
+import { useRef } from "react";
 
 
 interface CreateBookModalProps {
   handleCloseModal: () => void;
-  handleSubmit: ({name, email, phone,status, address} : { name: string, email:string,phone: string, status:string, address: string}) => void;
+  handleSubmit: ({name, email, phone, address} : { name: string, email:string,phone: string, address: string}) => void;
 }
 
 export default function CreateBookModal({ handleCloseModal, handleSubmit}: CreateBookModalProps) {
@@ -12,7 +12,6 @@ export default function CreateBookModal({ handleCloseModal, handleSubmit}: Creat
     const nameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const phoneRef = useRef<HTMLInputElement>(null);
-    const statusRef = useRef<HTMLInputElement>(null);
     const addressRef = useRef<HTMLInputElement>(null);
 
 
@@ -48,11 +47,6 @@ export default function CreateBookModal({ handleCloseModal, handleSubmit}: Creat
                 type="text" ref={phoneRef}/>
             </div>
             <div className="flex flex-col text-sm mb-4">
-                <label className="ml-3 opacity-50">Status</label>
-                <input className="mt-1 h-10 w-full rounded-lg pl-3 border-2 border-black font-semibold"
-                type="text" ref={statusRef}/>
-            </div>
-            <div className="flex flex-col text-sm mb-4">
                 <label className="ml-3 opacity-50">Address</label>
                 <input className="mt-1 h-10 w-full rounded-lg pl-3 border-2 border-black font-semibold"
                 type="text" ref={addressRef}/>
@@ -69,7 +63,7 @@ export default function CreateBookModal({ handleCloseModal, handleSubmit}: Creat
             <button
             type="button"
             className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
-            onClick={() => handleSubmit({name:nameRef.current!.value,email:emailRef.current!.value, phone:phoneRef.current!.value, status:statusRef.current!.value, address:addressRef.current!.value})}>
+            onClick={() => handleSubmit({name:nameRef.current!.value,email:emailRef.current!.value, phone:phoneRef.current!.value, address:addressRef.current!.value})}>
             Add
             </button>
         </div>
