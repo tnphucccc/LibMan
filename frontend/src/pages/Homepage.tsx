@@ -1,9 +1,9 @@
 export default function Homepage() {
   return (
-    <div>
+    <div className="w-full h-full">
       {/* Body1*/}
         <div className='relative h-96 w-full'>
-        <img src="./Image/hp3.jpg" className='h-96 w-screen object-cover' alt="" />
+        <img src="./Assets/hp3.jpg" className='h-96 w-screen object-cover' alt="" />
         
         <div className='absolute inset-0 p-20 bg-black bg-opacity-60'>
             <p className='text-white text-4xl font-bold'>Library Management System</p>
@@ -14,17 +14,17 @@ export default function Homepage() {
         {/* Body2*/}
         <div className='h-screen w-full bg-gray-200 flex flex-col pt-10 gap-y-10'>
             
-            <h1 className='text-3xl text-black text-center'>Introduction</h1>
+            <h1 className='text-3xl text-black text-center font-bold'>Introduction</h1>
 
             <div className='flex flex-row text-center justify-center gap-x-[100px]'>
                 <div className='w-[500px] flex flex-col gap-y-4'>
-                    <h2 className='text-xl font-bold text-orange-600'>Our Project</h2>
+                    <h2 className='text-xl font-semibold text-orange-600'>Our Project</h2>
                     <p>Our LMS (Library Management System) is a software that helps manage library resources, including cataloging, borrowing, returning, and circulation tracking. This software supports the systematic and accurate management of library operations, making it easy to store book information and track the status of borrowed books</p>
 
                 </div>
 
                 <div className='w-[500px] flex flex-col gap-y-4'>
-                    <h2 className='text-xl font-bold text-orange-600'>Purposes</h2>
+                    <h2 className='text-xl font-semibold text-orange-600'>Purposes</h2>
                     <div className='flex flex-col gap-y-4'>
                     <ul>Streamline information retrieval: Provide a user-friendly interface that enables readers to quickly locate and access desired books.</ul>
                     <ul>Optimize resource management: Assist librarians in managing inventory, tracking circulation, and identifying popular materials</ul>
@@ -32,7 +32,7 @@ export default function Homepage() {
                 </div>
             </div>
 
-            <h1 className='text-3xl text-black text-center'>Team Members</h1>
+            <h1 className='text-3xl text-black text-center font-bold'>Team Members</h1>
             
             <div className='flex justify-center gap-x-[200px]'>
             <ol className="list-decimal pl-9 flex flex-col  gap-y-1 ">

@@ -5,6 +5,7 @@ import BookCard from "../components/BookCard";
 import BorrowBookModal from "../components/BorrowBookModal";
 import CreateBookModal from "../components/CreateBookModal";
 import UpdateBookModal, { Author } from "../components/UpdateBookModal";
+import SearchBar from "../components/SearchBar";
 
 export interface Book {
   bookId: number,
@@ -29,6 +30,7 @@ export default function Books() {
     const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
     const [currentBookId, setCurrentBookId] = useState<number>();
     const [currentBook, setCurrentBook] = useState<Book>();
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     const handleGetBooks = async () => {  
         try {
@@ -41,6 +43,12 @@ export default function Books() {
             console.error(error);
         }
     };
+
+    const searchList = bookList.filter((book) => {
+        const searchByTitle = book.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const searchByAuthor = book.authors[0].name.toLowerCase().includes(searchQuery.toLowerCase());
+        return searchByTitle || searchByAuthor;
+    });
 
     const handleOpenModalBorrow = (id:number) => {
         setCurrentBookId(id);
@@ -161,10 +169,12 @@ export default function Books() {
     return (
         bookList && 
         <div className="p-4">
-            <h2 className="text-center font-bold text-3xl">Book List</h2>
-            <button className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg" onClick={()=>handleOpenModalCreate()}>Add book</button>
+            <div className="flex flex-row justify-between px-4">
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                <button className="border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black rounded-lg" onClick={()=>handleOpenModalCreate()}>Add book</button>
+            </div>
             <div className="flex flex-row flex-wrap w-full h-fit gap-6 mt-4 justify-center">
-                {bookList.map((book: any) => (
+                {searchList.map((book: any) => (
                 <BookCard book={book} handleOpenModalBorrow={handleOpenModalBorrow} handleDelete={handleDelete}  handleOpenModalUpdate={handleOpenModalUpdate}/>
             ))}
             </div>

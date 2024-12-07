@@ -53,7 +53,7 @@ export default function BorrowBookModal({ setIsShowModal, handleCloseModal, hand
             className=" bg-green-500 text-sm font-semibold text-white p-2 rounded-lg w-20"
             onClick={() => handleSubmit({id: parseInt(idRef.current!.value), date: new Date(dateRef.current!.value)})}
             >
-            Create
+            Borrow
             </button>
         </div>
     </div>
