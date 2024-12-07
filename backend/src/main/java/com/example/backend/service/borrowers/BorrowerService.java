@@ -33,30 +33,26 @@ public class BorrowerService implements IBorrowerService {
     private LibraryMapper libraryMapper;
 
     @Override
-    public List<BorrowerDTO> getAllBorrowers() {
+    public List<BorrowerDTO.BorrowerSummaryDTO> getAllBorrowers() {
         logger.info("Fetching all borrowers from the database");
         return borrowerRepository.findAll().stream()
-                .map(borrower -> {
-                    BorrowerDTO borrowerDTO = libraryMapper.toBorrowerDTO(borrower);
-                    List<Borrowing> borrowings = borrowerRepository.findBorrowingByBorrowerId(borrower.getBorrowerId());
-                    borrowerDTO.setBorrowings(borrowings.stream()
-                            .map(libraryMapper::toBorrowingDTO)
-                            .collect(Collectors.toSet()));
-                    return borrowerDTO;
-                }).
+                .map(libraryMapper::toBorrowerSummaryDTO).
                 collect(Collectors.toList());
     }
 
     @Override
     public BorrowerDTO getBorrowerById(Long borrowerID) {
         logger.info("Fetching borrower with id: {}", borrowerID);
+
         Borrower borrower = borrowerRepository.findById(borrowerID)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrower not found with id: " + borrowerID));
         BorrowerDTO borrowerDTO = libraryMapper.toBorrowerDTO(borrower);
+
         List<Borrowing> borrowings = borrowerRepository.findBorrowingByBorrowerId(borrower.getBorrowerId());
         borrowerDTO.setBorrowings(borrowings.stream()
                 .map(libraryMapper::toBorrowingDTO)
                 .collect(Collectors.toSet()));
+
         return borrowerDTO;
     }
 
