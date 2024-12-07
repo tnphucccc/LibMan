@@ -4,8 +4,9 @@ import Modal from "../components/Modal";
 import BookCard from "../components/BookCard";
 import BorrowBookModal from "../components/BorrowBookModal";
 import CreateBookModal from "../components/CreateBookModal";
-import UpdateBookModal, { Author } from "../components/UpdateBookModal";
+import UpdateBookModal from "../components/UpdateBookModal";
 import SearchBar from "../components/SearchBar";
+import { Author } from "./Authors";
 
 export interface Book {
   bookId: number,

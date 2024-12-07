@@ -1,12 +1,5 @@
 import { IoMdClose } from "react-icons/io";
-
-interface Author {
-  authorId: number;
-  portraitUrl: string;
-  name: string;
-  nationality: string;
-  books: { title: string; coverImageUrl: string; bookId: number }[];
-}
+import { Author } from "../pages/Authors";
 
 interface AuthorDetailModalProps {
   author: Author;
@@ -34,7 +27,7 @@ export default function AuthorDetailModal({
                   <h4 className="text-xl font-semibold">Works</h4>
                   <ul className="list-disc list-inside mt-2 w-full">
                     {author.books.map((book) => (
-                      <ul key={book.bookId} className="text-base truncate">
+                      <ul key={book.id} className="text-base truncate">
                         <p>{book.title}</p>
                       </ul>
                     ))}
@@ -46,37 +39,3 @@ export default function AuthorDetailModal({
     </div>
   );
 }
-
-
-{/* <div
-      key={author.authorId}
-      className="w-full h-full bg-opacity-50 bg-black flex justify-center items-center fixed top-0 left-0 z-50"
-    >
-      <div className="bg-white p-6 rounded-3xl w-[2000px] md:w-1/2 h-auto border-[5px] border-orange-700 flex flex-col gap-y-10">
-        <div className="flex justify-end"><button className="text-red-500 font-semibold" onClick={handleCloseModal}> X </button></div>
-        
-        <div className="flex">
-            <div className="w-">
-                <img src={author.portraitUrl} className="w-32 h-32 object-cover rounded-full"/>
-                <h3 className="text-2xl font-bold">{author.name}</h3>
-                <p className="text-lg mt-2"> <strong>Nationality:</strong> {author.nationality} </p>
-
-            </div>
-            <div className="w-2/3">
-                <div className="mt-4">
-                <h4 className="text-xl font-semibold">Books List:</h4>
-                <ul className="list-disc list-inside mt-2">
-                  {author.books.map((book) => (
-                    <li key={book.bookId} className="text-lg">
-                      {book.title}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-
-        </div>
-       
-      </div>
-    </div> */}
