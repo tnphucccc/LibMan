@@ -81,6 +81,7 @@ public class LibraryMapper {
         borrowingDTO.setBorrowerId(borrowing.getBorrower().getBorrowerId());
         borrowingDTO.setBorrowedDate(borrowing.getBorrowedDate());
         borrowingDTO.setDueDate(borrowing.getDueDate());
+        borrowingDTO.setReturnedDate(borrowing.getReturnedDate());
         borrowingDTO.setStatus(borrowing.getStatus().name());
         return borrowingDTO;
     }
@@ -93,6 +94,7 @@ public class LibraryMapper {
         borrowerDTO.setEmail(borrower.getEmail());
         borrowerDTO.setPhone(borrower.getPhone());
         borrowerDTO.setAddress(borrower.getAddress());
+        borrowerDTO.setStatus(borrower.getStatus().name());
         return borrowerDTO;
     }
 
@@ -109,8 +111,9 @@ public class LibraryMapper {
         return new BorrowerDTO.BorrowerSummaryDTO(
                 borrower.getBorrowerId(),
                 borrower.getName(),
-                borrower.getEmail(),
-                borrower.getAddress()
+                borrower.getPhone(),
+                borrower.getAddress(),
+                borrower.getStatus().name()
         );
     }
 }

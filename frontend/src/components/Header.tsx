@@ -20,6 +20,10 @@ export default function Header() {
         navigate('/Books');
     }
 
+    const handleBorrowers = () => {
+        navigate('/Borrowers');
+    }
+
   return (
     <div className={`w-full h-full bg-orange-500 flex justify-between items-center py-2 px-16`}>
         <div className='flex justify-center items-center gap-x-5 pl-[20px] hover:cursor-pointer' onClick={()=>handleHome()}>
@@ -46,6 +50,9 @@ export default function Header() {
                     Record
             </button>
 
+            <button className="text-white font-bold rounded-lg border-2 border-white p-2 hover:bg-white hover:text-orange-500 text-base w-24" onClick={()=>handleBorrowers()}>
+                    Borrowers
+            </button>
         </div>
   </div>
   )

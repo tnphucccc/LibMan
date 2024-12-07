@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage'
 import Books from './pages/Books'
 import Authors from './pages/Authors'
 import Record from './pages/Record'
+import Borrowers from './pages/Borrowers'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/Authors" element={<Authors />} />
       <Route path="/Record" element={<Record/>} />
       <Route path='/Books' element={<Books />} />
+      <Route path='/Borrowers' element={<Borrowers />} />
     </Routes>
   </Layout>
   )

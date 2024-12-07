@@ -15,7 +15,7 @@ public class BorrowerController {
     private IBorrowerService borrowerService;
 
     @GetMapping({"", "/"})
-    public List<BorrowerDTO> getAllBorrowers() {
+    public List<BorrowerDTO.BorrowerSummaryDTO> getAllBorrowers() {
         return borrowerService.getAllBorrowers();
     }
 
@@ -31,7 +31,7 @@ public class BorrowerController {
         return ResponseEntity.ok(newBorrower);
     }
 
-    @PutMapping({"/{id}", "/{id}/"})
+    @PatchMapping({"/{id}", "/{id}/"})
     public ResponseEntity<BorrowerDTO> updateAuthor(@PathVariable Long id, @RequestBody BorrowerDTO borrowerDTO) {
         BorrowerDTO updatedBorrower = borrowerService.updateBorrower(id, borrowerDTO);
         return ResponseEntity.ok(updatedBorrower);
