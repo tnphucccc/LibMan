@@ -23,7 +23,7 @@ export default function AuthorDetailModal({
                 <IoMdClose />
             </span> </button>
           </div>
-          <div className="text-center ml-5 w-full px-4">
+          <div className="text-center ml-5 w-full px-4 m-3">
                   <h4 className="text-xl font-semibold">Works</h4>
                   <ul className="list-disc list-inside mt-2 w-full">
                     {author.books.map((book) => (
@@ -34,8 +34,6 @@ export default function AuthorDetailModal({
                   </ul>
             </div>
         </div>
-
-
     </div>
   );
 }

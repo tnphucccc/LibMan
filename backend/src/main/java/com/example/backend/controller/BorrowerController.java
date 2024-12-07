@@ -26,7 +26,7 @@ public class BorrowerController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<BorrowerDTO> createBorrower(@RequestBody BorrowerDTO borrowerDTO) {
+    public ResponseEntity<BorrowerDTO> createBorrower(@RequestBody BorrowerDTO.BorrowerSummaryDTO borrowerDTO) {
         BorrowerDTO newBorrower = borrowerService.createBorrower(borrowerDTO);
         return ResponseEntity.ok(newBorrower);
     }

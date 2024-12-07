@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import AuthorCard from "../components/AuthorCard";
 import CreateAuthorModal from "../components/CreateAuthorModal";
