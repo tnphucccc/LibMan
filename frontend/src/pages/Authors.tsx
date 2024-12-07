@@ -143,10 +143,10 @@ export default function Authors() {
 
   return (
     <div className="p-4">
-      <div className="flex flex-row justify-between px-4">
+      <div className="flex flex-row justify-between items-center px-4">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <button
-          className="absolute border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black top-24 right-12 rounded-lg"
+          className="border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black rounded-lg"
           onClick={() => handleOpenModalCreate()}
           >
           Add Author

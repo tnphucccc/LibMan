@@ -170,7 +170,7 @@ export default function Books() {
     return (
         bookList && 
         <div className="p-4">
-            <div className="flex flex-row justify-between px-4">
+            <div className="flex flex-row justify-between items-center px-4">
                 <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 <button className="border-2 border-green-500 bg-green-500 text-white font-semibold p-2 hover:bg-white hover:text-black rounded-lg" onClick={()=>handleOpenModalCreate()}>Add book</button>
             </div>
