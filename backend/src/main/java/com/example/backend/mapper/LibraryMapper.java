@@ -111,6 +111,7 @@ public class LibraryMapper {
         return new BorrowerDTO.BorrowerSummaryDTO(
                 borrower.getBorrowerId(),
                 borrower.getName(),
+                borrower.getEmail(),
                 borrower.getPhone(),
                 borrower.getAddress(),
                 borrower.getStatus().name()

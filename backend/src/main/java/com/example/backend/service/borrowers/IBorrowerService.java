@@ -9,7 +9,7 @@ public interface IBorrowerService {
 
     BorrowerDTO getBorrowerById(Long borrowerID);
 
-    BorrowerDTO createBorrower(BorrowerDTO borrowerDTO);
+    BorrowerDTO createBorrower(BorrowerDTO.BorrowerSummaryDTO borrowerDTO);
 
     BorrowerDTO updateBorrower(Long borrowerID, BorrowerDTO borrowerDTO);
 

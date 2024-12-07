@@ -57,19 +57,13 @@ public class BorrowerService implements IBorrowerService {
     }
 
     @Override
-    public BorrowerDTO createBorrower(BorrowerDTO borrowerDTO) {
+    public BorrowerDTO createBorrower(BorrowerDTO.BorrowerSummaryDTO borrowerDTO) {
         logger.info("Creating a new borrower");
         Borrower borrower = new Borrower();
         borrower.setPhone(borrowerDTO.getPhone());
         borrower.setName(borrowerDTO.getName());
-        borrower.setCreatedAt(borrowerDTO.getCreatedAt());
-        borrower.setUpdatedAt(borrowerDTO.getUpdatedAt());
         borrower.setAddress(borrowerDTO.getAddress());
         borrower.setEmail(borrowerDTO.getEmail());
-        borrower.setStatus(Borrower.BorrowerStatus.valueOf(borrowerDTO.getStatus()));
-
-        Set<Borrowing> borrowings = getPersistedBorrowings(borrowerDTO.getBorrowings());
-        borrower.setBorrowings(borrowings);
 
         Borrower savedBorrower = borrowerRepository.save(borrower);
         logger.info("Borrower created successfully with id: {}", savedBorrower.getBorrowerId());
