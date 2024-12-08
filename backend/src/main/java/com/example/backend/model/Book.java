@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -61,5 +62,10 @@ public class Book {
         AVAILABLE,
         BORROWED,
         LOST
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, title);
     }
 }

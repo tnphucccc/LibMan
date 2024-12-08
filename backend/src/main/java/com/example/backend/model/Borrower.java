@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -52,5 +53,10 @@ public class Borrower {
     public enum BorrowerStatus {
         ACTIVE,
         SUSPENDED
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(borrowerId, name);
     }
 }

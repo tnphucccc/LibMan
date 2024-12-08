@@ -27,6 +27,9 @@ public class Author {
     @Column(name = "nationality")
     private String nationality;
 
+    @Column(name = "portrait_url")
+    private String portraitUrl;
+
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 

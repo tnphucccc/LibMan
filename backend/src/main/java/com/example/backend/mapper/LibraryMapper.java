@@ -2,8 +2,12 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.AuthorDTO;
 import com.example.backend.dto.BookDTO;
+import com.example.backend.dto.BorrowerDTO;
+import com.example.backend.dto.BorrowingDTO;
 import com.example.backend.model.Author;
 import com.example.backend.model.Book;
+import com.example.backend.model.Borrower;
+import com.example.backend.model.Borrowing;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -42,6 +46,7 @@ public class LibraryMapper {
         authorDTO.setAuthorId(author.getAuthorId());
         authorDTO.setName(author.getName());
         authorDTO.setNationality(author.getNationality());
+        authorDTO.setPortraitUrl(author.getPortraitUrl());
 
         if (author.getBooks() != null) {
             authorDTO.setBooks(author.getBooks().stream()
@@ -56,7 +61,8 @@ public class LibraryMapper {
         return new AuthorDTO.AuthorSummaryDTO(
                 author.getAuthorId(),
                 author.getName(),
-                author.getNationality()
+                author.getNationality(),
+                author.getPortraitUrl()
         );
     }
 
@@ -64,6 +70,51 @@ public class LibraryMapper {
         Author author = new Author();
         author.setName(authorDTO.getName());
         author.setNationality(authorDTO.getNationality());
+        author.setPortraitUrl(authorDTO.getPortraitUrl());
         return author;
+    }
+
+    public BorrowingDTO toBorrowingDTO(Borrowing borrowing) {
+        BorrowingDTO borrowingDTO = new BorrowingDTO();
+        borrowingDTO.setBorrowingId(borrowing.getBorrowingId());
+        borrowingDTO.setBookId(borrowing.getBook().getBookId());
+        borrowingDTO.setBorrowerId(borrowing.getBorrower().getBorrowerId());
+        borrowingDTO.setBorrowedDate(borrowing.getBorrowedDate());
+        borrowingDTO.setDueDate(borrowing.getDueDate());
+        borrowingDTO.setReturnedDate(borrowing.getReturnedDate());
+        borrowingDTO.setStatus(borrowing.getStatus().name());
+        return borrowingDTO;
+    }
+
+
+    public BorrowerDTO toBorrowerDTO(Borrower borrower) {
+        BorrowerDTO borrowerDTO = new BorrowerDTO();
+        borrowerDTO.setBorrowerId(borrower.getBorrowerId());
+        borrowerDTO.setName(borrower.getName());
+        borrowerDTO.setEmail(borrower.getEmail());
+        borrowerDTO.setPhone(borrower.getPhone());
+        borrowerDTO.setAddress(borrower.getAddress());
+        borrowerDTO.setStatus(borrower.getStatus().name());
+        return borrowerDTO;
+    }
+
+    public Borrower toBorrowerEntity(BorrowerDTO borrowerDTO) {
+        Borrower borrower = new Borrower();
+        borrower.setName(borrowerDTO.getName());
+        borrower.setEmail(borrowerDTO.getEmail());
+        borrower.setPhone(borrowerDTO.getPhone());
+        borrower.setAddress(borrowerDTO.getAddress());
+        return borrower;
+    }
+
+    public BorrowerDTO.BorrowerSummaryDTO toBorrowerSummaryDTO(Borrower borrower) {
+        return new BorrowerDTO.BorrowerSummaryDTO(
+                borrower.getBorrowerId(),
+                borrower.getName(),
+                borrower.getEmail(),
+                borrower.getPhone(),
+                borrower.getAddress(),
+                borrower.getStatus().name()
+        );
     }
 }

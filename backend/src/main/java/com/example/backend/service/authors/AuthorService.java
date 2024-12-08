@@ -6,6 +6,7 @@ import com.example.backend.mapper.LibraryMapper;
 import com.example.backend.model.Author;
 import com.example.backend.model.Book;
 import com.example.backend.repository.AuthorRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,17 +73,25 @@ public class AuthorService implements IAuthorService {
         if (authorDTO.getNationality() != null) {
             existingAuthor.setNationality(authorDTO.getNationality());
         }
+        if (authorDTO.getPortraitUrl() != null) {
+            existingAuthor.setPortraitUrl(authorDTO.getPortraitUrl());
+        }
 
         Author updatedAuthor = authorRepository.save(existingAuthor);
         logger.info("Author updated successfully with id: {}", updatedAuthor.getAuthorId());
         return libraryMapper.toAuthorDTO(updatedAuthor);
     }
 
-    @Override
+    @Transactional
     public void deleteAuthor(Long authorId) {
         logger.info("Deleting author with id: {}", authorId);
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + authorId));
+
+        for (Book book : author.getBooks()) {
+            book.getAuthors().remove(author);
+        }
+
         authorRepository.delete(author);
         logger.info("Author deleted successfully with id: {}", authorId);
     }
