@@ -65,8 +65,6 @@ public class BorrowingService implements IBorrowingService {
 
         Book book = bookRepository.findById(borrowingDTO.getBookId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + borrowingDTO.getBookId()));
-        book.setStatus(Book.BookStatus.BORROWED);
-        bookRepository.save(book);
 
         Borrower borrower = borrowerRepository.findById(borrowingDTO.getBorrowerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Borrower not found with id: " + borrowingDTO.getBorrowerId()));
@@ -74,6 +72,10 @@ public class BorrowingService implements IBorrowingService {
         borrowing.setBook(book);
 
         Borrowing saveBorrowing = borrowingRepository.save(borrowing);
+
+        book.setStatus(Book.BookStatus.BORROWED);
+        bookRepository.save(book);
+
         logger.info("Borrowing created successfully with id: {}", saveBorrowing.getBorrowingId());
         return libraryMapper.toBorrowingDTO(saveBorrowing);
     }
