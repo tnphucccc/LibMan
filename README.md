@@ -62,12 +62,12 @@ The system is built using Java SpringBoot for the backend and React for frontend
 4. Open your browser and go to `http://localhost:5173/`
 
 ## Features <a name="Features"></a>
-- [x] Add, update, delete books
-- [x] Add, update, delete authors
-- [x] Add, update, delete members
-- [x] Borrow, return books
-- [x] View borrowing history
-- [x] Search books
+- ✅ Add, update, delete books
+- ✅ Add, update, delete authors
+- ✅ Add, update, delete members
+- ✅ Borrow, return books
+- ✅ View borrowing history
+- ✅ Search books
 
 ## Challenges <a name="Challenges"></a>
 
