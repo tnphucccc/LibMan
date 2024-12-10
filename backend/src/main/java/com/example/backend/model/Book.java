@@ -47,7 +47,7 @@ public class Book {
     @Column(name = "cover_image_url")
     private String coverImageUrl;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Borrowing> borrowings = new HashSet<>();
 
     @CreationTimestamp
