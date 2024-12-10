@@ -14,7 +14,7 @@ export default function BorrowBookModal({ setIsShowModal, handleCloseModal, hand
     const dateRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="border-0 rounded-lg shadow-lg flex flex-col w-96 bg-white p-6">
+    <div className="border-2 rounded-lg shadow-lg flex flex-col w-96 bg-white p-6">
         {/*header*/}
         <div className="flex items-center justify-between pb-4 pt-2 border-b-2 border-blueGray-200 rounded-t w-full">
             <h3 className="text-lg font-semibold">Borrowing</h3>

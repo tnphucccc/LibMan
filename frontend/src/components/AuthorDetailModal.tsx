@@ -11,7 +11,7 @@ export default function AuthorDetailModal({
   handleCloseModal,
 }: AuthorDetailModalProps) {
   return (
-    <div  key={author.authorId} className="bg-white rounded-3xl w-[600px] h-[400px] border-2 border-black flex">
+    <div  key={author.authorId} className="bg-white rounded-lg w-[600px] h-[400px] border-2 border-black flex">
         <div className="w-[250px] flex flex-col items-center justify-center gap-y-4">
         <       img src={author.portraitUrl} className="w-32 h-32 object-cover rounded-full"/>
                 <h3 className="text-xl font-bold text-center">{author.name}</h3>
