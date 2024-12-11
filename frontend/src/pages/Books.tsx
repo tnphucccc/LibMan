@@ -47,7 +47,7 @@ export default function Books() {
 
     const searchList = bookList.filter((book) => {
         const searchByTitle = book.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const searchByAuthor = book.authors[0].name.toLowerCase().includes(searchQuery.toLowerCase());
+        const searchByAuthor = book.authors[0]?.name.toLowerCase().includes(searchQuery.toLowerCase());
         return searchByTitle || searchByAuthor;
     });
 
